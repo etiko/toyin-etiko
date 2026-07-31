@@ -1,0 +1,466 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+interface Props {
+	project: CollectionEntry<'work'>;
+	nextProject: CollectionEntry<'work'>;
+}
+
+export async function getStaticPaths() {
+	const projects = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+	return projects.map((project, index) => ({
+		params: { id: project.id },
+		props: {
+			project,
+			nextProject: projects[(index + 1) % projects.length],
+		},
+	}));
+}
+
+const { project, nextProject } = Astro.props;
+const { Content } = await render(project);
+const { data } = project;
+const projectNumber = String(data.order).padStart(2, '0');
+const leadVideoUrl = data.leadVideo
+	? new URL(`https://www.youtube-nocookie.com/embed/${data.leadVideo.id}`)
+	: null;
+
+if (leadVideoUrl) {
+	leadVideoUrl.searchParams.set('rel', '0');
+
+	if (data.leadVideo?.startAt) {
+		leadVideoUrl.searchParams.set('start', String(data.leadVideo.startAt));
+	}
+}
+---
+
+<BaseLayout title={`${data.title} case study`} description={data.summary}>
+	<article class="case-study">
+		<header class="case-hero">
+			<div class="container case-hero__meta">
+				<a href="/work/">&larr; All work</a>
+				<span>Case study {projectNumber} / 05</span>
+				<span>{data.discipline}</span>
+			</div>
+
+			<div class="container case-hero__title">
+				<div>
+					<p>{data.client}</p>
+					<h1>{data.title}</h1>
+				</div>
+				<p>{data.summary}</p>
+			</div>
+
+			<div class="container case-hero__facts">
+				<dl>
+					<div><dt>Role</dt><dd>{data.role}</dd></div>
+					<div><dt>Engagement</dt><dd>{data.engagement}</dd></div>
+					<div>
+						<dt>{data.leadVideo ? 'Selected media' : 'Selected images'}</dt>
+						<dd>{data.gallery.length + 1}</dd>
+					</div>
+				</dl>
+			</div>
+
+			<figure class="container case-hero__media">
+				{
+					data.leadVideo && leadVideoUrl ? (
+						<div class="case-hero__video">
+							<iframe
+								src={leadVideoUrl.toString()}
+								title={data.leadVideo.title}
+								loading="lazy"
+								referrerpolicy="strict-origin-when-cross-origin"
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+								allowfullscreen
+							/>
+						</div>
+					) : (
+						<Image src={data.image} alt={data.imageAlt} width={1900} quality={86} />
+					)
+				}
+			</figure>
+		</header>
+
+		<section class="case-content">
+			<div class="container case-content__grid">
+				<aside>
+					<p>Capabilities</p>
+					<ul>
+						{data.tags.map((tag) => <li>{tag}</li>)}
+					</ul>
+				</aside>
+				<div class="prose">
+					<Content />
+				</div>
+			</div>
+		</section>
+
+		<section class="case-gallery" aria-labelledby="gallery-title">
+			<div class="container case-gallery__heading">
+				<p class="eyebrow">Project gallery</p>
+				<h2 id="gallery-title">Selected screens and project moments.</h2>
+			</div>
+
+			<div class="container case-gallery__grid">
+				{
+					data.gallery.map((item, index) => (
+						<figure>
+							<div>
+								<Image src={item.src} alt={item.alt} width={1600} loading="lazy" quality={84} />
+							</div>
+							<figcaption>
+								<span>{String(index + 2).padStart(2, '0')}</span>
+								<p>{item.caption}</p>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</section>
+
+		<footer class="case-next">
+			<div class="container">
+				<p>Next project</p>
+				<a href={`/work/${nextProject.id}/`}>
+					<span>{nextProject.data.title}</span>
+					<i aria-hidden="true">&rarr;</i>
+				</a>
+			</div>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.case-hero {
+		padding-block: 2rem clamp(5rem, 10vw, 9rem);
+		background: var(--white);
+	}
+
+	.case-hero__meta {
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		gap: 2rem;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--black);
+	}
+
+	.case-hero__meta a,
+	.case-hero__meta span {
+		color: var(--grey-500);
+		font-size: 0.65rem;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.case-hero__title {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+		gap: clamp(3rem, 8vw, 8rem);
+		align-items: end;
+		padding-block: clamp(4rem, 8vw, 7rem);
+	}
+
+	.case-hero__title > div > p {
+		margin-bottom: 0.8rem;
+		color: var(--grey-500);
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.case-hero h1 {
+		font-size: clamp(4.2rem, 9vw, 8.5rem);
+		font-weight: 670;
+		letter-spacing: -0.075em;
+		line-height: 0.88;
+	}
+
+	.case-hero__title > p {
+		color: var(--grey-700);
+		font-size: clamp(1.1rem, 2vw, 1.4rem);
+		line-height: 1.65;
+	}
+
+	.case-hero__facts dl {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		margin: 0 0 clamp(3rem, 7vw, 6rem);
+		padding: 1rem 0;
+		border-top: 1px solid var(--black);
+		border-bottom: 1px solid var(--black);
+	}
+
+	.case-hero__facts dl div {
+		padding-inline: 1rem;
+		border-right: 1px solid var(--grey-300);
+	}
+
+	.case-hero__facts dl div:first-child {
+		padding-left: 0;
+	}
+
+	.case-hero__facts dl div:last-child {
+		border-right: 0;
+	}
+
+	.case-hero__facts dt {
+		color: var(--grey-500);
+		font-size: 0.62rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.case-hero__facts dd {
+		margin: 0.4rem 0 0;
+		font-size: 0.82rem;
+		font-weight: 650;
+	}
+
+	.case-hero__media {
+		margin-bottom: 0;
+		padding: clamp(0.5rem, 1.5vw, 1rem);
+		background: var(--off-white);
+	}
+
+	.case-hero__media :global(img) {
+		width: 100%;
+		height: auto;
+	}
+
+	.case-hero__video {
+		aspect-ratio: 16 / 9;
+		background: var(--black);
+	}
+
+	.case-hero__video iframe {
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	.case-content {
+		padding-block: clamp(6rem, 11vw, 10rem);
+		border-top: 1px solid var(--grey-100);
+		background: var(--white);
+	}
+
+	.case-content__grid {
+		display: grid;
+		grid-template-columns: minmax(11rem, 0.35fr) minmax(0, 1fr) minmax(0, 0.2fr);
+		gap: clamp(3rem, 8vw, 7rem);
+	}
+
+	.case-content aside {
+		position: sticky;
+		top: 8rem;
+		align-self: start;
+	}
+
+	.case-content aside > p {
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid var(--black);
+		color: var(--grey-500);
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.case-content aside ul {
+		display: grid;
+		gap: 0.55rem;
+		margin: 1rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.case-content aside li {
+		font-size: 0.8rem;
+		font-weight: 620;
+	}
+
+	.prose {
+		grid-column: 2;
+	}
+
+	.prose :global(h2) {
+		margin: 3.5rem 0 1rem;
+		font-size: clamp(2.2rem, 4.5vw, 4rem);
+		font-weight: 650;
+		letter-spacing: -0.055em;
+		line-height: 1;
+	}
+
+	.prose :global(h2:first-child) {
+		margin-top: 0;
+	}
+
+	.prose :global(p),
+	.prose :global(li) {
+		color: var(--grey-700);
+		font-size: clamp(1rem, 1.6vw, 1.12rem);
+		line-height: 1.85;
+	}
+
+	.prose :global(p + p) {
+		margin-top: 1.15rem;
+	}
+
+	.prose :global(ul) {
+		display: grid;
+		gap: 0.65rem;
+		margin: 1.3rem 0 0;
+		padding-left: 1.2rem;
+	}
+
+	.case-gallery {
+		padding-block: clamp(6rem, 11vw, 10rem);
+		background: var(--off-white);
+	}
+
+	.case-gallery__heading {
+		display: grid;
+		grid-template-columns: 0.35fr 1.65fr;
+		gap: clamp(2rem, 6vw, 6rem);
+		align-items: start;
+		margin-bottom: clamp(4rem, 8vw, 7rem);
+	}
+
+	.case-gallery h2 {
+		max-width: 55rem;
+		font-size: clamp(2.8rem, 6vw, 5.5rem);
+		font-weight: 650;
+		letter-spacing: -0.065em;
+		line-height: 1;
+	}
+
+	.case-gallery__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(3rem, 7vw, 6rem) 1.5rem;
+	}
+
+	.case-gallery figure {
+		margin: 0;
+	}
+
+	.case-gallery figure > div {
+		padding: clamp(0.4rem, 1vw, 0.75rem);
+		background: var(--white);
+	}
+
+	.case-gallery figure :global(img) {
+		width: 100%;
+		height: auto;
+	}
+
+	.case-gallery figcaption {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.8rem;
+		margin-top: 0.9rem;
+		color: var(--grey-500);
+		font-size: 0.78rem;
+		line-height: 1.6;
+	}
+
+	.case-gallery figcaption span {
+		font-size: 0.65rem;
+		font-weight: 700;
+	}
+
+	.case-next {
+		padding-block: clamp(5rem, 9vw, 8rem);
+		background: var(--black);
+		color: var(--white);
+	}
+
+	.case-next p {
+		color: var(--grey-300);
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.case-next a {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 1.25rem;
+		padding-top: 1.25rem;
+		border-top: 1px solid var(--white);
+		color: var(--white);
+		font-size: clamp(3.2rem, 8vw, 7rem);
+		font-weight: 650;
+		letter-spacing: -0.065em;
+		line-height: 0.9;
+		text-decoration: none;
+	}
+
+	.case-next a i {
+		font-style: normal;
+		transition: transform 180ms ease;
+	}
+
+	.case-next a:hover i,
+	.case-next a:focus-visible i {
+		transform: translateX(0.35rem);
+	}
+
+	@media (max-width: 800px) {
+		.case-hero__title,
+		.case-content__grid,
+		.case-gallery__heading {
+			grid-template-columns: 1fr;
+		}
+
+		.case-content aside {
+			position: static;
+		}
+
+		.case-content aside ul {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.prose {
+			grid-column: 1;
+		}
+	}
+
+	@media (max-width: 650px) {
+		.case-hero__meta {
+			grid-template-columns: 1fr auto;
+		}
+
+		.case-hero__meta span:last-child {
+			display: none;
+		}
+
+		.case-hero h1 {
+			font-size: clamp(3.6rem, 16vw, 5.25rem);
+		}
+
+		.case-hero__facts dl,
+		.case-gallery__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.case-hero__facts dl div,
+		.case-hero__facts dl div:first-child {
+			padding: 0.75rem 0;
+			border-right: 0;
+			border-bottom: 1px solid var(--grey-300);
+		}
+
+		.case-hero__facts dl div:last-child {
+			border-bottom: 0;
+		}
+	}
+</style>

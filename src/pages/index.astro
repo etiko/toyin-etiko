@@ -1,0 +1,438 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('work', ({ data }) => data.featured)).sort(
+	(a, b) => a.data.order - b.data.order,
+);
+const featuredProjects = projects.slice(0, 2);
+
+const capabilities = [
+	{
+		number: '01',
+		title: 'Design systems',
+		description:
+			'Reusable components, documented standards and practical foundations that help teams work consistently.',
+	},
+	{
+		number: '02',
+		title: 'Front-end engineering',
+		description:
+			'Maintainable Angular applications that turn complex requirements into clear product experiences.',
+	},
+	{
+		number: '03',
+		title: 'Accessible UI',
+		description:
+			'Semantic, responsive and keyboard-friendly interfaces with accessibility built into delivery.',
+	},
+];
+---
+
+<BaseLayout>
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="container hero__inner">
+			<p class="eyebrow">Front-end engineer / Design systems / Accessibility</p>
+			<h1 id="hero-title">Accessible digital products, built with clarity.</h1>
+			<div class="hero__bottom">
+				<p>
+					I build Angular applications and reusable design systems that help teams deliver
+					consistent, dependable experiences.
+				</p>
+				<div>
+					<a class="button" href="/work/">View selected work</a>
+					<a class="button button--secondary" href="/contact/">Get in touch</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="featured-work" aria-labelledby="featured-work-title">
+		<div class="container featured-work__heading">
+			<div>
+				<p class="eyebrow">Selected work</p>
+				<h2 id="featured-work-title">A brief look at recent case studies.</h2>
+			</div>
+			<a href="/work/">View all work <span aria-hidden="true">&rarr;</span></a>
+		</div>
+
+		<div class="container featured-work__grid">
+			{
+				featuredProjects.map((project, index) => (
+					<article>
+						<a href={`/work/${project.id}/`} class="featured-work__image">
+							<Image
+								src={project.data.image}
+								alt={project.data.imageAlt}
+								width={1200}
+								loading="lazy"
+								quality={84}
+							/>
+						</a>
+						<div class="featured-work__meta">
+							<span>{String(index + 1).padStart(2, '0')}</span>
+							<span>{project.data.discipline}</span>
+						</div>
+						<h3><a href={`/work/${project.id}/`}>{project.data.title}</a></h3>
+						<p>{project.data.summary}</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="expertise-section" id="expertise" aria-labelledby="expertise-title">
+		<div class="container expertise-section__heading">
+			<p class="eyebrow">Expertise</p>
+			<h2 id="expertise-title">A system-level approach to front-end delivery.</h2>
+		</div>
+
+		<div class="container capability-grid">
+			{
+				capabilities.map((capability) => (
+					<article>
+						<span>{capability.number}</span>
+						<h3>{capability.title}</h3>
+						<p>{capability.description}</p>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="about-section" id="about" aria-labelledby="about-title">
+		<div class="container about-section__grid">
+			<p class="eyebrow">About</p>
+			<div>
+				<h2 id="about-title">
+					I enjoy making complex products feel simple, consistent and usable.
+				</h2>
+				<div class="about-section__copy">
+					<p>
+						My experience spans Angular applications, design systems, accessible public
+						services, CMS platforms and interactive campaign work.
+					</p>
+					<p>
+						Across each project, the goal is the same: create clear, reusable foundations
+						without losing sight of the people using the product.
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="contact-prompt" aria-label="Contact">
+		<div class="container">
+			<p>Have a product or interface that needs more clarity?</p>
+			<a href="/contact/">Contact me <span aria-hidden="true">&rarr;</span></a>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		display: grid;
+		min-height: min(48rem, calc(100svh - 5rem));
+		align-items: center;
+		padding-block: clamp(5rem, 10vw, 9rem);
+		background: var(--off-white);
+	}
+
+	.hero__inner {
+		display: grid;
+	}
+
+	.hero h1 {
+		max-width: 67rem;
+		margin-top: 1.5rem;
+		font-size: clamp(3.6rem, 7.5vw, 7rem);
+		font-weight: 680;
+		letter-spacing: -0.075em;
+		line-height: 0.95;
+		text-wrap: balance;
+	}
+
+	.hero__bottom {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 3rem;
+		align-items: end;
+		margin-top: clamp(2.5rem, 6vw, 5rem);
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--black);
+	}
+
+	.hero__bottom > p {
+		max-width: 37rem;
+		color: var(--grey-700);
+		font-size: clamp(1rem, 1.8vw, 1.2rem);
+		line-height: 1.7;
+	}
+
+	.hero__bottom > div {
+		display: flex;
+		gap: 0.65rem;
+	}
+
+	.featured-work {
+		padding-block: clamp(6rem, 11vw, 10rem);
+	}
+
+	.featured-work__heading {
+		display: flex;
+		gap: 3rem;
+		align-items: end;
+		justify-content: space-between;
+		margin-bottom: clamp(3rem, 6vw, 5rem);
+	}
+
+	.featured-work__heading > div {
+		max-width: 52rem;
+	}
+
+	.featured-work__heading > a {
+		display: inline-flex;
+		gap: 0.5rem;
+		align-items: center;
+		flex: 0 0 auto;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid var(--black);
+		color: var(--black);
+		font-size: 0.76rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.featured-work__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(2rem, 5vw, 4rem);
+	}
+
+	.featured-work__image {
+		display: block;
+		overflow: hidden;
+		background: var(--off-white);
+	}
+
+	.featured-work__image :global(img) {
+		width: 100%;
+		height: auto;
+		transition: transform 300ms ease;
+	}
+
+	.featured-work__image:hover :global(img),
+	.featured-work__image:focus-visible :global(img) {
+		transform: scale(1.01);
+	}
+
+	.featured-work__meta {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 1rem;
+		color: var(--grey-500);
+		font-size: 0.66rem;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+	}
+
+	.featured-work h3 {
+		margin-top: 0.75rem;
+		font-size: clamp(1.8rem, 3.5vw, 3rem);
+		letter-spacing: -0.045em;
+		line-height: 1.05;
+	}
+
+	.featured-work h3 a {
+		color: var(--black);
+		text-decoration: none;
+	}
+
+	.featured-work article > p {
+		max-width: 35rem;
+		margin-top: 0.75rem;
+		color: var(--grey-700);
+		font-size: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.expertise-section__heading {
+		display: grid;
+		grid-template-columns: 0.3fr 1.25fr 0.45fr;
+		gap: clamp(2rem, 6vw, 6rem);
+		align-items: end;
+		margin-bottom: clamp(4rem, 8vw, 7rem);
+	}
+
+	.featured-work h2,
+	.expertise-section h2,
+	.about-section h2,
+	.contact-prompt p {
+		font-size: clamp(2.8rem, 6vw, 5.5rem);
+		font-weight: 650;
+		letter-spacing: -0.065em;
+		line-height: 1;
+		text-wrap: balance;
+	}
+
+	.expertise-section {
+		padding-block: clamp(6rem, 11vw, 10rem);
+		background: var(--off-white);
+	}
+
+	.expertise-section__heading {
+		grid-template-columns: 0.3fr 1.7fr;
+	}
+
+	.capability-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		border-top: 1px solid var(--black);
+		border-bottom: 1px solid var(--black);
+	}
+
+	.capability-grid article {
+		min-height: 21rem;
+		padding: 1.5rem;
+		border-right: 1px solid var(--black);
+	}
+
+	.capability-grid article:last-child {
+		border-right: 0;
+	}
+
+	.capability-grid article > span {
+		color: var(--grey-500);
+		font-size: 0.68rem;
+		font-weight: 700;
+	}
+
+	.capability-grid h3 {
+		margin-top: 6rem;
+		font-size: clamp(1.6rem, 3vw, 2.3rem);
+		letter-spacing: -0.04em;
+	}
+
+	.capability-grid p {
+		margin-top: 0.9rem;
+		color: var(--grey-700);
+		font-size: 0.9rem;
+		line-height: 1.7;
+	}
+
+	.about-section {
+		padding-block: clamp(6rem, 11vw, 10rem);
+	}
+
+	.about-section__grid {
+		display: grid;
+		grid-template-columns: 0.3fr 1.7fr;
+		gap: clamp(2rem, 6vw, 6rem);
+	}
+
+	.about-section h2 {
+		max-width: 62rem;
+	}
+
+	.about-section__copy {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 3rem;
+		max-width: 49rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--black);
+	}
+
+	.about-section__copy p {
+		color: var(--grey-700);
+		font-size: 0.95rem;
+		line-height: 1.75;
+	}
+
+	.contact-prompt {
+		padding-block: clamp(4rem, 8vw, 6rem);
+		background: var(--black);
+		color: var(--white);
+	}
+
+	.contact-prompt > div {
+		display: flex;
+		gap: 3rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.contact-prompt p {
+		max-width: 58rem;
+	}
+
+	.contact-prompt a {
+		display: inline-flex;
+		gap: 0.6rem;
+		align-items: center;
+		flex: 0 0 auto;
+		padding-bottom: 0.25rem;
+		border-bottom: 1px solid var(--white);
+		color: var(--white);
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	@media (max-width: 850px) {
+		.hero__bottom,
+		.expertise-section__heading,
+		.about-section__grid {
+			grid-template-columns: 1fr;
+		}
+
+	}
+
+	@media (max-width: 650px) {
+		.hero {
+			min-height: auto;
+		}
+
+		.hero h1 {
+			font-size: clamp(3.4rem, 15vw, 4.75rem);
+		}
+
+		.hero__bottom > div {
+			align-items: stretch;
+			flex-direction: column;
+		}
+
+		.featured-work__heading {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.featured-work__grid,
+		.capability-grid,
+		.about-section__copy {
+			grid-template-columns: 1fr;
+		}
+
+		.contact-prompt > div {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.capability-grid article {
+			min-height: auto;
+			border-right: 0;
+			border-bottom: 1px solid var(--black);
+		}
+
+		.capability-grid article:last-child {
+			border-bottom: 0;
+		}
+
+		.capability-grid h3 {
+			margin-top: 4rem;
+		}
+	}
+</style>

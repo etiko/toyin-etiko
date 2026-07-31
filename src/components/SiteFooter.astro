@@ -1,0 +1,90 @@
+---
+import { siteConfig } from '../config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__top">
+		<a href="/">{siteConfig.name}.</a>
+		<p>Front-end engineering, design systems and accessible user interfaces.</p>
+	</div>
+	<div class="container site-footer__bottom">
+		<p>&copy; {year} {siteConfig.name}</p>
+		<a href="#top">Back to top &uarr;</a>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		padding: 2.5rem 0 1.5rem;
+		background: var(--black);
+		color: var(--white);
+	}
+
+	.site-footer__top {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3rem;
+		align-items: center;
+		padding-bottom: 2rem;
+	}
+
+	.site-footer__top > a {
+		color: var(--white);
+		font-size: 1.2rem;
+		font-weight: 760;
+		letter-spacing: -0.03em;
+		line-height: 1;
+		text-decoration: none;
+	}
+
+	.site-footer__top > p {
+		max-width: 26rem;
+		justify-self: end;
+		color: var(--grey-300);
+		font-size: 0.75rem;
+		line-height: 1.55;
+		text-align: right;
+	}
+
+	.site-footer__bottom {
+		display: flex;
+		gap: 2rem;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: 1rem;
+		border-top: 1px solid var(--grey-700);
+	}
+
+	.site-footer__bottom p,
+	.site-footer__bottom a {
+		color: var(--grey-300);
+		font-size: 0.68rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.site-footer__bottom > a {
+		margin-left: auto;
+		text-align: right;
+	}
+
+	.site-footer a:hover,
+	.site-footer a:focus-visible {
+		color: var(--white);
+	}
+
+	@media (max-width: 650px) {
+		.site-footer__top {
+			grid-template-columns: 1fr auto;
+			gap: 1rem;
+		}
+
+		.site-footer__top > p {
+			justify-self: end;
+			text-align: right;
+		}
+
+	}
+</style>

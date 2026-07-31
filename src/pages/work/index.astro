@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../../components/ProjectCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+	title="Selected work"
+	description="Case studies spanning design systems, accessible product UI, publishing, multilingual content and interactive learning."
+>
+	<header class="work-hero">
+		<div class="container work-hero__meta">
+			<p>Work index</p>
+			<p>{String(projects.length).padStart(2, '0')} case studies</p>
+		</div>
+		<div class="container work-hero__grid">
+			<h1>Selected work.</h1>
+			<p>
+				Projects spanning design systems, public services, publishing,
+				multilingual content and interactive learning.
+			</p>
+		</div>
+	</header>
+
+	<section class="work-list" aria-label="Case studies">
+		<div class="container">
+			{projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.work-hero {
+		padding-block: 2rem clamp(5rem, 10vw, 9rem);
+	}
+
+	.work-hero__meta {
+		display: flex;
+		justify-content: space-between;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--black);
+	}
+
+	.work-hero__meta p {
+		color: var(--grey-500);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.work-hero__grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+		gap: clamp(3rem, 8vw, 8rem);
+		align-items: end;
+		padding-top: clamp(4rem, 8vw, 7rem);
+	}
+
+	.work-hero h1 {
+		font-size: clamp(4.2rem, 9vw, 8.25rem);
+		font-weight: 670;
+		letter-spacing: -0.075em;
+		line-height: 0.9;
+	}
+
+	.work-hero__grid > p {
+		color: var(--grey-700);
+		font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+		line-height: 1.7;
+	}
+
+	.work-list {
+		padding-bottom: clamp(6rem, 11vw, 10rem);
+	}
+
+	@media (max-width: 800px) {
+		.work-hero__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.work-hero__grid > p {
+			max-width: 38rem;
+		}
+	}
+
+	@media (max-width: 650px) {
+		.work-hero h1 {
+			font-size: clamp(3.6rem, 16vw, 5.25rem);
+		}
+	}
+</style>

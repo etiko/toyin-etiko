@@ -1,0 +1,158 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'work'>;
+	index: number;
+}
+
+const { project, index } = Astro.props;
+const { data } = project;
+const href = `/work/${project.id}/`;
+const number = String(index + 1).padStart(2, '0');
+---
+
+<article class="project-item">
+	<header>
+		<span>{number}</span>
+		<span>{data.discipline}</span>
+		<span>{data.client}</span>
+	</header>
+
+	<div class="project-item__grid">
+		<a class="project-item__image" href={href} aria-label={`Read the ${data.title} case study`}>
+			<Image src={data.image} alt={data.imageAlt} width={1600} loading="lazy" quality={84} />
+		</a>
+
+		<div class="project-item__content">
+			<h3><a href={href}>{data.title}</a></h3>
+			<p>{data.summary}</p>
+			<ul aria-label={`${data.title} capabilities`}>
+				{data.tags.map((tag) => <li>{tag}</li>)}
+			</ul>
+			<a class="project-item__link" href={href}>View case study <span aria-hidden="true">&nearr;</span></a>
+		</div>
+	</div>
+</article>
+
+<style>
+	.project-item {
+		padding-block: clamp(3.5rem, 7vw, 6rem);
+		border-top: 1px solid var(--black);
+	}
+
+	.project-item:last-child {
+		border-bottom: 1px solid var(--black);
+	}
+
+	.project-item header {
+		display: grid;
+		grid-template-columns: 4rem 1fr auto;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+		color: var(--grey-500);
+		font-size: 0.66rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.project-item__grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.55fr);
+		gap: clamp(2.5rem, 7vw, 6rem);
+		align-items: center;
+	}
+
+	.project-item__image {
+		display: block;
+		overflow: hidden;
+		background: var(--off-white);
+	}
+
+	.project-item__image :global(img) {
+		width: 100%;
+		height: auto;
+		transition: transform 300ms ease;
+	}
+
+	.project-item__image:hover :global(img),
+	.project-item__image:focus-visible :global(img) {
+		transform: scale(1.01);
+	}
+
+	.project-item h3 {
+		font-size: clamp(2.2rem, 4.7vw, 4.5rem);
+		font-weight: 690;
+		letter-spacing: -0.055em;
+		line-height: 1;
+	}
+
+	.project-item h3 a {
+		color: var(--black);
+		text-decoration: none;
+	}
+
+	.project-item__content > p {
+		margin-top: 1.25rem;
+		color: var(--grey-700);
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.project-item ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0;
+		margin: 1.5rem 0 0;
+		padding: 1rem 0 0;
+		border-top: 1px solid var(--grey-300);
+		list-style: none;
+	}
+
+	.project-item li {
+		color: var(--grey-500);
+		font-size: 0.66rem;
+		font-weight: 650;
+		text-transform: uppercase;
+	}
+
+	.project-item li:not(:last-child)::after {
+		margin-inline: 0.5rem;
+		content: '/';
+	}
+
+	.project-item__link {
+		display: inline-flex;
+		gap: 0.45rem;
+		align-items: center;
+		margin-top: 2rem;
+		padding-bottom: 0.2rem;
+		border-bottom: 1px solid var(--black);
+		color: var(--black);
+		font-size: 0.78rem;
+		font-weight: 720;
+		text-decoration: none;
+	}
+
+	@media (max-width: 800px) {
+		.project-item__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.project-item__content {
+			max-width: 38rem;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.project-item header {
+			grid-template-columns: auto 1fr;
+		}
+
+		.project-item header span:last-child {
+			display: none;
+		}
+	}
+</style>

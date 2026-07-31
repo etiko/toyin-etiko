@@ -1,0 +1,165 @@
+---
+import { siteConfig } from '../../config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Contact"
+	description="Contact Toyin Etiko about front-end engineering, design systems and accessible digital products."
+>
+	<section class="contact-page">
+		<div class="container contact-page__meta">
+			<p>Contact</p>
+			<p>Open to relevant conversations</p>
+		</div>
+
+		<div class="container contact-page__grid">
+			<div>
+				<p class="eyebrow">Get in touch</p>
+				<h1>Let's talk about the product you are building.</h1>
+			</div>
+			<div class="contact-page__details">
+				<p>
+					For conversations about front-end engineering, Angular applications,
+					design systems or accessible interfaces, email me directly.
+				</p>
+				<a href={`mailto:${siteConfig.email}`}>
+					<span>Email</span>
+					<strong>{siteConfig.email}</strong>
+					<i aria-hidden="true">&nearr;</i>
+				</a>
+				<dl>
+					<div>
+						<dt>Focus</dt>
+						<dd>Front-end engineering, design systems and accessibility</dd>
+					</div>
+					<div>
+						<dt>Location</dt>
+						<dd>United Kingdom</dd>
+					</div>
+				</dl>
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.contact-page {
+		min-height: calc(100svh - 5rem);
+		padding-block: 2rem clamp(6rem, 12vw, 10rem);
+	}
+
+	.contact-page__meta {
+		display: flex;
+		justify-content: space-between;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--black);
+	}
+
+	.contact-page__meta p {
+		color: var(--grey-500);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.contact-page__grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(19rem, 0.65fr);
+		gap: clamp(4rem, 10vw, 10rem);
+		align-items: end;
+		padding-top: clamp(5rem, 10vw, 9rem);
+	}
+
+	.contact-page h1 {
+		max-width: 55rem;
+		margin-top: 1.25rem;
+		font-size: clamp(3.8rem, 8vw, 7.75rem);
+		font-weight: 670;
+		letter-spacing: -0.075em;
+		line-height: 0.92;
+	}
+
+	.contact-page__details > p {
+		color: var(--grey-700);
+		font-size: 1rem;
+		line-height: 1.75;
+	}
+
+	.contact-page__details > a {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		margin-top: 2.5rem;
+		padding: 1.15rem 3rem 1.15rem 0;
+		border-top: 1px solid var(--black);
+		border-bottom: 1px solid var(--black);
+		color: var(--black);
+		text-decoration: none;
+	}
+
+	.contact-page__details > a span {
+		color: var(--grey-500);
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.contact-page__details > a strong {
+		overflow: hidden;
+		margin-top: 0.4rem;
+		font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+		text-overflow: ellipsis;
+	}
+
+	.contact-page__details > a i {
+		position: absolute;
+		top: 50%;
+		right: 0;
+		font-size: 1.5rem;
+		font-style: normal;
+		transform: translateY(-50%);
+	}
+
+	.contact-page dl {
+		display: grid;
+		gap: 1.25rem;
+		margin: 2.5rem 0 0;
+	}
+
+	.contact-page dl div {
+		display: grid;
+		grid-template-columns: 5rem 1fr;
+		gap: 1rem;
+	}
+
+	.contact-page dt {
+		color: var(--grey-500);
+		font-size: 0.65rem;
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.contact-page dd {
+		margin: 0;
+		font-size: 0.82rem;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 800px) {
+		.contact-page__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.contact-page__details {
+			max-width: 38rem;
+		}
+	}
+
+	@media (max-width: 650px) {
+		.contact-page h1 {
+			font-size: clamp(3.5rem, 15vw, 5.1rem);
+		}
+	}
+</style>
