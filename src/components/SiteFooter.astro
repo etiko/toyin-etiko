@@ -11,6 +11,7 @@ const year = new Date().getFullYear();
 	</div>
 	<div class="container site-footer__bottom">
 		<p>&copy; {year} {siteConfig.name}</p>
+		<a href={siteConfig.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
 		<a href="#top">Back to top &uarr;</a>
 	</div>
 </footer>
@@ -65,7 +66,7 @@ const year = new Date().getFullYear();
 		text-decoration: none;
 	}
 
-	.site-footer__bottom > a {
+	.site-footer__bottom > a:first-of-type {
 		margin-left: auto;
 		text-align: right;
 	}

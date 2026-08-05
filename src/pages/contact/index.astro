@@ -28,6 +28,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 					<strong>{siteConfig.email}</strong>
 					<i aria-hidden="true">&nearr;</i>
 				</a>
+				<a href={siteConfig.linkedin} target="_blank" rel="noreferrer">
+					<span>LinkedIn</span>
+					<strong>Toyin Etiko</strong>
+					<i aria-hidden="true">&nearr;</i>
+				</a>
 				<dl>
 					<div>
 						<dt>Focus</dt>
@@ -97,6 +102,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 		border-bottom: 1px solid var(--black);
 		color: var(--black);
 		text-decoration: none;
+	}
+
+	.contact-page__details > a + a {
+		margin-top: 0;
+		border-top: 0;
 	}
 
 	.contact-page__details > a span {
