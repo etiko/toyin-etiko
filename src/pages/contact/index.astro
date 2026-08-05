@@ -105,7 +105,17 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 				headers: { Accept: 'application/json' },
 			});
 
-			if (response.ok) {
+			const contentType = response.headers.get('content-type') || '';
+			let payload = null;
+			if (contentType.includes('application/json')) {
+				payload = await response.json().catch(() => null);
+			}
+
+			// A genuine success requires the server to have actually executed the
+			// PHP handler and returned { ok: true } — not just any HTTP 200. This
+			// guards against environments (e.g. local dev, or a static-only host)
+			// where contact.php is served as plain text instead of being run.
+			if (response.ok && payload && payload.ok === true) {
 				form.reset();
 				if (status) status.textContent = 'Thanks — your message has been sent. I will reply as soon as I can.';
 			} else {
