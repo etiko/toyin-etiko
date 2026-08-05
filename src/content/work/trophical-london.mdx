@@ -1,0 +1,60 @@
+---
+title: Tropical London
+client: Tropical London
+discipline: Hospitality website
+summary: Rebuilding a South East London resto-lounge's website into a fast, CMS-managed Next.js experience.
+role: Front-end engineer
+engagement: Independent redesign
+order: 7
+featured: true
+accent: peach
+image: ../../assets/projects/trophical-home.png
+imageAlt: The Tropical London homepage with a hero photograph and a resto-lounge tagline.
+gallery:
+  - src: ../../assets/projects/trophical-menu.png
+    alt: The Tropical London menu page listing dishes and drinks by category.
+    caption: A dedicated menu route replaced scroll-anchor navigation with its own clear journey.
+  - src: ../../assets/projects/trophical-events.png
+    alt: The Tropical London events page promoting live music, brunch and shisha nights.
+    caption: Events, private hire and gallery each became their own page rather than a single long scroll.
+tags:
+  - Next.js
+  - Sanity CMS
+  - Framer Motion
+---
+
+import ProjectNote from '../../components/ProjectNote.astro';
+
+## The opportunity
+
+Tropical London needed a website that matched the energy of the venue itself —
+dining, cocktails, bottomless brunch, shisha and live music — without staff
+having to touch code every time the menu or events calendar changed.
+
+## The approach
+
+I built the site with Next.js App Router and Tailwind CSS, giving each part of
+the experience — menu, events, private hire, gallery and contact — its own
+dedicated route. Framer Motion adds scroll reveals and light interaction
+without slowing the experience down.
+
+Menu categories, events, gallery images and testimonials are modelled in
+Sanity, a free-tier headless CMS, so staff can edit content directly from a
+`/studio` route without a developer in the loop. The site ships with realistic
+placeholder content so it renders correctly before any CMS account exists, and
+switches over automatically once real content is added. The reservation form
+posts to a configurable form endpoint, running in a safe demo mode until one is
+connected.
+
+<ProjectNote title="Editable without a developer">
+	Structuring menu items, events and gallery images as Sanity content types
+	means the business can keep the site current — new dishes, new nights,
+	new photos — without needing a code change for every update.
+</ProjectNote>
+
+## Contribution
+
+- Built the site with Next.js, TypeScript and Tailwind CSS.
+- Modelled menu, events, gallery and testimonial content in Sanity CMS.
+- Added Framer Motion scroll reveals and micro-interactions.
+- Implemented a configurable reservation form with a safe placeholder mode.

@@ -8,6 +8,8 @@ const projects = (await getCollection('work', ({ data }) => data.featured)).sort
 );
 const featuredProjects = projects.slice(0, 2);
 
+const stack = ['Angular', 'React', 'Next.js', 'Astro'];
+
 const capabilities = [
 	{
 		number: '01',
@@ -19,7 +21,7 @@ const capabilities = [
 		number: '02',
 		title: 'Front-end engineering',
 		description:
-			'Maintainable Angular applications that turn complex requirements into clear product experiences.',
+			'Maintainable applications across Angular, React, Next.js and Astro that turn complex requirements into clear product experiences.',
 	},
 	{
 		number: '03',
@@ -35,10 +37,17 @@ const capabilities = [
 		<div class="container hero__inner">
 			<p class="eyebrow">Front-end engineer / Design systems / Accessibility</p>
 			<h1 id="hero-title">Accessible digital products, built with clarity.</h1>
+			<ul class="hero__stack" aria-label="Frameworks I work in">
+				{
+					stack.map((item) => (
+						<li>{item}</li>
+					))
+				}
+			</ul>
 			<div class="hero__bottom">
 				<p>
-					I build Angular applications and reusable design systems that help teams deliver
-					consistent, dependable experiences.
+					I build applications across Angular, React, Next.js and Astro, and reusable design
+					systems that help teams deliver consistent, dependable experiences.
 				</p>
 				<div>
 					<a class="button" href="/work/">View selected work</a>
@@ -110,8 +119,9 @@ const capabilities = [
 				</h2>
 				<div class="about-section__copy">
 					<p>
-						My experience spans Angular applications, design systems, accessible public
-						services, CMS platforms and interactive campaign work.
+						My experience spans Angular, React, Next.js and Astro applications, design
+						systems, accessible public services, CMS platforms and interactive campaign
+						work.
 					</p>
 					<p>
 						Across each project, the goal is the same: create clear, reusable foundations
@@ -151,6 +161,26 @@ const capabilities = [
 		letter-spacing: -0.075em;
 		line-height: 0.95;
 		text-wrap: balance;
+	}
+
+	.hero__stack {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 0.6rem;
+		margin-top: 1.75rem;
+		margin-inline-start: 0;
+		padding-inline-start: 0;
+		list-style: none;
+	}
+
+	.hero__stack li {
+		padding: 0.35rem 0.85rem;
+		border: 1px solid var(--black);
+		color: var(--grey-700);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
 	}
 
 	.hero__bottom {

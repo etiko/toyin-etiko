@@ -1,0 +1,62 @@
+---
+title: CakesbyBIMS
+client: CakesbyBIMS
+discipline: Marketing website
+summary: Rebuilding a bespoke cake business's website from a legacy WordPress theme into a fast, personal Next.js storefront.
+role: Front-end engineer
+engagement: Independent redesign
+order: 6
+featured: true
+accent: rose
+image: ../../assets/projects/cakesbybims-home.png
+imageAlt: The redesigned CakesbyBIMS homepage with a hero photograph, tagline and call to action.
+gallery:
+  - src: ../../assets/projects/cakesbybims-gallery.png
+    alt: The CakesbyBIMS gallery page with filterable cake photography by occasion.
+    caption: A filterable gallery replaced a generic WordPress media grid with real cake photography.
+  - src: ../../assets/projects/cakesbybims-services.png
+    alt: The CakesbyBIMS services page listing cake types with a call to enquire for a quote.
+    caption: Services link straight to a tailored quote instead of publishing unreliable prices.
+tags:
+  - Next.js
+  - React
+  - Tailwind CSS
+---
+
+import ProjectNote from '../../components/ProjectNote.astro';
+
+## The opportunity
+
+CakesbyBIMS' previous website ran on an ageing WordPress theme carrying stock
+photography and Lorem Ipsum copy on its About and Contact pages, despite the
+business having genuine cake photography and a loyal following. The brief I
+set myself was to keep everything that already worked — the "Baked with Love"
+story and real social links — while replacing the rest with a faster, more
+personal experience.
+
+## The approach
+
+I rebuilt the site with Next.js App Router, TypeScript and Tailwind CSS v4,
+giving each navigation item its own dedicated route rather than mixing
+scroll-anchors into the nav. Real product photography from the business's
+media library replaced stock imagery throughout, and a filterable gallery
+with a lightbox gives visitors a proper way to browse past work by occasion.
+
+Service pricing was deliberately removed: the previous site never published
+real prices, so every service now links to a contact page built around a
+tailored quote instead of a fabricated "from £X" figure. The enquiry form
+itself needed no backend — it opens the visitor's email client with a
+pre-filled message, keeping the project dependency-free to host and maintain.
+
+<ProjectNote title="Keeping what already worked">
+	Not every legacy detail needed replacing. Genuine copy, real photography and
+	existing social proof were preserved and rebuilt around, rather than
+	discarded for the sake of a clean slate.
+</ProjectNote>
+
+## Contribution
+
+- Rebuilt the site end-to-end with Next.js, TypeScript and Tailwind CSS v4.
+- Replaced stock imagery with real CakesbyBIMS product photography.
+- Built a filterable, lightbox-enabled gallery organised by occasion.
+- Implemented a dependency-free, client-side enquiry form.

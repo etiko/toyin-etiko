@@ -6,6 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 interface Props {
 	project: CollectionEntry<'work'>;
 	nextProject: CollectionEntry<'work'>;
+	totalProjects: number;
 }
 
 export async function getStaticPaths() {
@@ -16,14 +17,16 @@ export async function getStaticPaths() {
 		props: {
 			project,
 			nextProject: projects[(index + 1) % projects.length],
+			totalProjects: projects.length,
 		},
 	}));
 }
 
-const { project, nextProject } = Astro.props;
+const { project, nextProject, totalProjects } = Astro.props;
 const { Content } = await render(project);
 const { data } = project;
 const projectNumber = String(data.order).padStart(2, '0');
+const totalProjectsLabel = String(totalProjects).padStart(2, '0');
 const leadVideoUrl = data.leadVideo
 	? new URL(`https://www.youtube-nocookie.com/embed/${data.leadVideo.id}`)
 	: null;
@@ -42,7 +45,7 @@ if (leadVideoUrl) {
 		<header class="case-hero">
 			<div class="container case-hero__meta">
 				<a href="/work/">&larr; All work</a>
-				<span>Case study {projectNumber} / 05</span>
+				<span>Case study {projectNumber} / {totalProjectsLabel}</span>
 				<span>{data.discipline}</span>
 			</div>
 

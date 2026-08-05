@@ -1,0 +1,63 @@
+---
+title: German Engineering
+client: German Engineering Car Specialists
+discipline: Automotive retail platform
+summary: Planning and building a mobile-first storefront for a used car and van specialist, replacing an ageing template platform.
+role: Front-end engineer
+engagement: Independent redevelopment
+order: 8
+featured: true
+accent: sky
+image: ../../assets/projects/german-eng-home.png
+imageAlt: The German Engineering Car Specialists homepage with a hero vehicle photograph and primary calls to action.
+gallery:
+  - src: ../../assets/projects/german-eng-vehicles.png
+    alt: The German Engineering vehicles page listing used cars and vans for sale.
+    caption: Vehicle search and enquiry were treated as the primary sales journey.
+  - src: ../../assets/projects/german-eng-services.png
+    alt: The German Engineering services page covering servicing, MOT, bodywork and aftercare.
+    caption: Servicing and bodyshop customers get their own clear booking journey, separate from vehicle sales.
+tags:
+  - Next.js
+  - TypeScript
+  - Playwright
+---
+
+import ProjectNote from '../../components/ProjectNote.astro';
+
+## The opportunity
+
+German Engineering Car Specialists had a broad, credible offer — used cars and
+vans, finance, servicing, MOT, bodywork, tyres, recovery and aftercare — but
+its existing site ran on an ageing template platform with legacy jQuery,
+out-of-support PHP and a crowded, dated navigation that undersold the
+business.
+
+## The approach
+
+I proposed and began building a custom, mobile-first storefront with Next.js
+App Router, React and TypeScript that puts vehicle search and enquiry at the
+centre of the experience, while keeping servicing and bodyshop customers on
+their own dedicated booking journey. Vehicle data is accessed through an
+isolated feature module so the temporary stock fixture used during
+development can later be swapped for an approved dealer stock feed without
+touching the public-facing components.
+
+Quality was built in from the start rather than added later: Vitest and
+Testing Library cover component behaviour, Playwright with `@axe-core`
+verifies critical journeys and accessibility, and GitHub Actions runs install,
+lint, type-check, build and a dependency audit on every change. A `/api/health`
+endpoint supports uptime monitoring once deployed.
+
+<ProjectNote title="Designed for a real data swap">
+	Keeping vehicle access behind a typed, server-only adapter means the
+	temporary stock fixture can be replaced by a live feed later without any
+	changes to the pages or components that display it.
+</ProjectNote>
+
+## Contribution
+
+- Built a mobile-first storefront with Next.js, React and TypeScript.
+- Isolated vehicle data behind a typed adapter ready for a live stock feed.
+- Set up Vitest, Testing Library and Playwright with `@axe-core` accessibility checks.
+- Configured GitHub Actions CI covering lint, type-check, build and dependency audit.

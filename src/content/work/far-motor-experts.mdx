@@ -1,0 +1,66 @@
+---
+title: F.A.R. Motor Experts
+client: F.A.R. Motor Experts Ltd
+discipline: Local service business platform
+summary: Building a secure, Git-backed website for a Haverhill accident repair and bodywork specialist, with staff-editable content and carefully handled customer enquiries.
+role: Front-end engineer
+engagement: Independent build
+order: 9
+featured: true
+accent: mint
+image: ../../assets/projects/far-motor-home.png
+imageAlt: The F.A.R. Motor Experts homepage with a bold headline and workshop repair process diagram.
+gallery:
+  - src: ../../assets/projects/far-motor-our-work.png
+    alt: The F.A.R. Motor Experts our-work page describing the repair process.
+    caption: A dedicated page sets expectations before showing repair results, since the visible finish depends on work done underneath it.
+  - src: ../../assets/projects/far-motor-services.png
+    alt: The F.A.R. Motor Experts services page listing accident repair, vehicle recovery and bodywork repair.
+    caption: Each service explains what information helps the workshop advise on the right next step.
+tags:
+  - Astro
+  - TypeScript
+  - Decap CMS
+---
+
+import ProjectNote from '../../components/ProjectNote.astro';
+
+## The opportunity
+
+F.A.R. Motor Experts needed a website that could take real customer enquiries
+— including photos of vehicle damage — without exposing the business to the
+security and upkeep problems that usually come with handling uploads and
+personal data on a small business site.
+
+## The approach
+
+I built the site with Astro, keeping most pages prerendered and running only
+the contact, quote, confirmation and private-file routes on the server. A
+Decap CMS instance, self-hosted from the public folder, lets non-technical
+staff edit services and homepage content and commit changes straight to the
+Git repository — no separate CMS database to maintain.
+
+The quote and contact forms were treated as the highest-risk part of the
+build. Submitted photos are decoded, resized, re-encoded as WebP, stripped of
+metadata and stored outside the public directory; SQLite records the enquiry
+itself. Every submission passes same-origin checks, a signed CSRF token, a
+honeypot field, route-level rate limiting, server-side validation and an
+idempotency key, so retries and bots cannot duplicate or spoof a real
+enquiry. Staff access uploaded images through signed, private links that
+expire after seven days, and records are marked for expiry after 90 days by
+default.
+
+<ProjectNote title="Treating uploads as a liability, not a feature">
+	Every photo a customer submits is a piece of personal data. Resizing,
+	re-encoding, stripping metadata and signing access links are not
+	optional extras — they are the minimum needed before a small business
+	should be allowed to accept an upload at all.
+</ProjectNote>
+
+## Contribution
+
+- Built the site with Astro, TypeScript and a Node adapter in standalone mode.
+- Set up Decap CMS for Git-backed editing of services and homepage content.
+- Implemented quote and contact forms with CSRF, honeypot, rate limiting and idempotency protection.
+- Built an image pipeline that resizes, re-encodes and strips metadata from customer uploads.
+- Added signed, expiring private links and a default 90-day enquiry retention policy.
