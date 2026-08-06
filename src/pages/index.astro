@@ -29,6 +29,12 @@ const capabilities = [
 		description:
 			'Semantic, responsive and keyboard-friendly interfaces with accessibility built into delivery.',
 	},
+	{
+		number: '04',
+		title: 'AI-assisted engineering',
+		description:
+			'Using GitHub Copilot CLI and Claude Code in daily workflows to investigate issues, refactor legacy code and raise code quality and maintainability.',
+	},
 ];
 ---
 
@@ -318,7 +324,7 @@ const capabilities = [
 
 	.capability-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 		border-top: 1px solid var(--black);
 		border-bottom: 1px solid var(--black);
 	}
@@ -419,6 +425,21 @@ const capabilities = [
 			grid-template-columns: 1fr;
 		}
 
+		.capability-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.capability-grid article {
+			border-right: 1px solid var(--black);
+		}
+
+		.capability-grid article:nth-child(2n) {
+			border-right: 0;
+		}
+
+		.capability-grid article:nth-child(-n + 2) {
+			border-bottom: 1px solid var(--black);
+		}
 	}
 
 	@media (max-width: 650px) {
