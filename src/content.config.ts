@@ -34,6 +34,16 @@ const work = defineCollection({
 					}),
 				)
 				.min(2),
+			devicePreview: z
+				.object({
+					mobile: image(),
+					mobileAlt: z.string(),
+					tablet: image(),
+					tabletAlt: z.string(),
+					desktop: image(),
+					desktopAlt: z.string(),
+				})
+				.optional(),
 			tags: z.array(z.string()).min(1),
 		}),
 });

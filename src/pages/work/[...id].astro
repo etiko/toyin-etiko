@@ -125,6 +125,60 @@ if (leadVideoUrl) {
 			</div>
 		</section>
 
+		{
+			data.devicePreview && (
+				<section class="case-devices" aria-labelledby="devices-title">
+					<div class="container case-devices__heading">
+						<p class="eyebrow">On any device</p>
+						<h2 id="devices-title">How it looks on your screen.</h2>
+					</div>
+
+					<div class="container case-devices__frames">
+						<figure class="case-devices__desktop">
+							<div class="case-devices__frame case-devices__frame--desktop">
+								<Image
+									src={data.devicePreview.desktop}
+									alt={data.devicePreview.desktopAlt}
+									width={1400}
+									loading="lazy"
+									quality={84}
+								/>
+							</div>
+							<figcaption>Laptop</figcaption>
+						</figure>
+					</div>
+
+					<div class="container case-devices__frames">
+						<figure class="case-devices__phone">
+							<div class="case-devices__frame case-devices__frame--phone">
+								<Image
+									src={data.devicePreview.mobile}
+									alt={data.devicePreview.mobileAlt}
+									width={480}
+									loading="lazy"
+									quality={84}
+								/>
+							</div>
+							<figcaption>iPhone</figcaption>
+						</figure>
+
+						<figure class="case-devices__tablet">
+							<div class="case-devices__frame case-devices__frame--tablet">
+								<Image
+									src={data.devicePreview.tablet}
+									alt={data.devicePreview.tabletAlt}
+									width={720}
+									loading="lazy"
+									quality={84}
+								/>
+							</div>
+							<figcaption>iPad</figcaption>
+						</figure>
+					</div>
+				</section>
+			)
+		}
+
 		<footer class="case-next">
 			<div class="container">
 				<p>Next project</p>
@@ -375,6 +429,93 @@ if (leadVideoUrl) {
 	.case-gallery figcaption span {
 		font-size: 0.65rem;
 		font-weight: 700;
+	}
+
+	.case-devices {
+		padding-block: clamp(6rem, 11vw, 10rem);
+		background: var(--white);
+	}
+
+	.case-devices__heading {
+		display: grid;
+		grid-template-columns: 0.35fr 1.65fr;
+		gap: clamp(2rem, 6vw, 6rem);
+		align-items: start;
+		margin-bottom: clamp(4rem, 8vw, 7rem);
+	}
+
+	.case-devices h2 {
+		max-width: 55rem;
+		font-size: clamp(2.8rem, 6vw, 5.5rem);
+		font-weight: 650;
+		letter-spacing: -0.065em;
+		line-height: 1;
+	}
+
+	.case-devices__frames {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: center;
+		gap: clamp(2rem, 6vw, 5rem);
+	}
+
+	.case-devices__frames + .case-devices__frames {
+		margin-top: clamp(3rem, 7vw, 5rem);
+	}
+
+	.case-devices__frames figure {
+		display: grid;
+		justify-items: center;
+		gap: 1rem;
+		margin: 0;
+	}
+
+	.case-devices__frame {
+		overflow: hidden;
+		background: var(--black);
+		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+	}
+
+	.case-devices__frame--phone {
+		width: clamp(190px, 22vw, 260px);
+		padding: 0.6rem;
+		border-radius: 2.2rem;
+	}
+
+	.case-devices__frame--tablet {
+		width: clamp(280px, 32vw, 400px);
+		padding: 0.7rem;
+		border-radius: 1.4rem;
+	}
+
+	.case-devices__frame--desktop {
+		width: min(100%, 980px);
+		padding: 0.55rem 0.55rem 1.6rem;
+		border-radius: 0.9rem;
+	}
+
+	.case-devices__frame--desktop :global(img) {
+		border-radius: 0.4rem;
+	}
+
+	.case-devices__frame :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 1.4rem;
+	}
+
+	.case-devices__frame--tablet :global(img) {
+		border-radius: 0.85rem;
+	}
+
+	.case-devices__frames figcaption {
+		color: var(--grey-500);
+		font-size: 0.72rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	.case-next {
