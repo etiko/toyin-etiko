@@ -36,12 +36,12 @@ const work = defineCollection({
 				.min(2),
 			devicePreview: z
 				.object({
-					mobile: image(),
-					mobileAlt: z.string(),
-					tablet: image(),
-					tabletAlt: z.string(),
 					desktop: image(),
 					desktopAlt: z.string(),
+					mobile: image().optional(),
+					mobileAlt: z.string().optional(),
+					tablet: image().optional(),
+					tabletAlt: z.string().optional(),
 				})
 				.optional(),
 			tags: z.array(z.string()).min(1),

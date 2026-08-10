@@ -77,13 +77,15 @@ const capabilities = [
 				featuredProjects.map((project, index) => (
 					<article>
 						<a href={`/work/${project.id}/`} class="featured-work__image">
-							<Image
-								src={project.data.image}
-								alt={project.data.imageAlt}
-								width={1200}
-								loading="lazy"
-								quality={84}
-							/>
+							<div class="featured-work__frame">
+								<Image
+									src={project.data.devicePreview?.desktop ?? project.data.image}
+									alt={project.data.devicePreview?.desktopAlt ?? project.data.imageAlt}
+									width={1200}
+									loading="lazy"
+									quality={84}
+								/>
+							</div>
 						</a>
 						<div class="featured-work__meta">
 							<span>{String(index + 1).padStart(2, '0')}</span>
@@ -250,6 +252,19 @@ const capabilities = [
 		display: block;
 		overflow: hidden;
 		background: var(--off-white);
+	}
+
+	.featured-work__frame {
+		overflow: hidden;
+		background: var(--black);
+		border-radius: 0.9rem;
+		padding: 0.55rem 0.55rem 1.6rem;
+		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+	}
+
+	.featured-work__frame :global(img) {
+		display: block;
+		border-radius: 0.4rem;
 	}
 
 	.featured-work__image :global(img) {

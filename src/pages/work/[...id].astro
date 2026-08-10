@@ -102,29 +102,6 @@ if (leadVideoUrl) {
 			</div>
 		</section>
 
-		<section class="case-gallery" aria-labelledby="gallery-title">
-			<div class="container case-gallery__heading">
-				<p class="eyebrow">Project gallery</p>
-				<h2 id="gallery-title">Selected screens and project moments.</h2>
-			</div>
-
-			<div class="container case-gallery__grid">
-				{
-					data.gallery.map((item, index) => (
-						<figure>
-							<div>
-								<Image src={item.src} alt={item.alt} width={1600} loading="lazy" quality={84} />
-							</div>
-							<figcaption>
-								<span>{String(index + 2).padStart(2, '0')}</span>
-								<p>{item.caption}</p>
-							</figcaption>
-						</figure>
-					))
-				}
-			</div>
-		</section>
-
 		{
 			data.devicePreview && (
 				<section class="case-devices" aria-labelledby="devices-title">
@@ -148,33 +125,37 @@ if (leadVideoUrl) {
 						</figure>
 					</div>
 
-					<div class="container case-devices__frames">
-						<figure class="case-devices__phone">
-							<div class="case-devices__frame case-devices__frame--phone">
-								<Image
-									src={data.devicePreview.mobile}
-									alt={data.devicePreview.mobileAlt}
-									width={480}
-									loading="lazy"
-									quality={84}
-								/>
-							</div>
-							<figcaption>iPhone</figcaption>
-						</figure>
+					{
+						data.devicePreview.mobile && data.devicePreview.tablet && (
+							<div class="container case-devices__frames">
+								<figure class="case-devices__phone">
+									<div class="case-devices__frame case-devices__frame--phone">
+										<Image
+											src={data.devicePreview.mobile}
+											alt={data.devicePreview.mobileAlt ?? ''}
+											width={480}
+											loading="lazy"
+											quality={84}
+										/>
+									</div>
+									<figcaption>iPhone</figcaption>
+								</figure>
 
-						<figure class="case-devices__tablet">
-							<div class="case-devices__frame case-devices__frame--tablet">
-								<Image
-									src={data.devicePreview.tablet}
-									alt={data.devicePreview.tabletAlt}
-									width={720}
-									loading="lazy"
-									quality={84}
-								/>
+								<figure class="case-devices__tablet">
+									<div class="case-devices__frame case-devices__frame--tablet">
+										<Image
+											src={data.devicePreview.tablet}
+											alt={data.devicePreview.tabletAlt ?? ''}
+											width={720}
+											loading="lazy"
+											quality={84}
+										/>
+									</div>
+									<figcaption>iPad</figcaption>
+								</figure>
 							</div>
-							<figcaption>iPad</figcaption>
-						</figure>
-					</div>
+						)
+					}
 				</section>
 			)
 		}
@@ -375,62 +356,6 @@ if (leadVideoUrl) {
 		padding-left: 1.2rem;
 	}
 
-	.case-gallery {
-		padding-block: clamp(6rem, 11vw, 10rem);
-		background: var(--off-white);
-	}
-
-	.case-gallery__heading {
-		display: grid;
-		grid-template-columns: 0.35fr 1.65fr;
-		gap: clamp(2rem, 6vw, 6rem);
-		align-items: start;
-		margin-bottom: clamp(4rem, 8vw, 7rem);
-	}
-
-	.case-gallery h2 {
-		max-width: 55rem;
-		font-size: clamp(2.8rem, 6vw, 5.5rem);
-		font-weight: 650;
-		letter-spacing: -0.065em;
-		line-height: 1;
-	}
-
-	.case-gallery__grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: clamp(3rem, 7vw, 6rem) 1.5rem;
-	}
-
-	.case-gallery figure {
-		margin: 0;
-	}
-
-	.case-gallery figure > div {
-		padding: clamp(0.4rem, 1vw, 0.75rem);
-		background: var(--white);
-	}
-
-	.case-gallery figure :global(img) {
-		width: 100%;
-		height: auto;
-	}
-
-	.case-gallery figcaption {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 0.8rem;
-		margin-top: 0.9rem;
-		color: var(--grey-500);
-		font-size: 0.78rem;
-		line-height: 1.6;
-	}
-
-	.case-gallery figcaption span {
-		font-size: 0.65rem;
-		font-weight: 700;
-	}
-
 	.case-devices {
 		padding-block: clamp(6rem, 11vw, 10rem);
 		background: var(--white);
@@ -560,7 +485,7 @@ if (leadVideoUrl) {
 	@media (max-width: 800px) {
 		.case-hero__title,
 		.case-content__grid,
-		.case-gallery__heading {
+		.case-devices__heading {
 			grid-template-columns: 1fr;
 		}
 
@@ -591,8 +516,7 @@ if (leadVideoUrl) {
 			font-size: clamp(3.6rem, 16vw, 5.25rem);
 		}
 
-		.case-hero__facts dl,
-		.case-gallery__grid {
+		.case-hero__facts dl {
 			grid-template-columns: 1fr;
 		}
 
