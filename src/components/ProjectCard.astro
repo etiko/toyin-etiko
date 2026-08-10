@@ -22,7 +22,15 @@ const number = String(index + 1).padStart(2, '0');
 
 	<div class="project-item__grid">
 		<a class="project-item__image" href={href} aria-label={`Read the ${data.title} case study`}>
-			<Image src={data.image} alt={data.imageAlt} width={1600} loading="lazy" quality={84} />
+			<div class="project-item__frame">
+				<Image
+					src={data.devicePreview?.desktop ?? data.image}
+					alt={data.devicePreview?.desktopAlt ?? data.imageAlt}
+					width={1600}
+					loading="lazy"
+					quality={84}
+				/>
+			</div>
 		</a>
 
 		<div class="project-item__content">
@@ -69,6 +77,19 @@ const number = String(index + 1).padStart(2, '0');
 		display: block;
 		overflow: hidden;
 		background: var(--off-white);
+	}
+
+	.project-item__frame {
+		overflow: hidden;
+		background: var(--black);
+		border-radius: 0.9rem;
+		padding: 0.55rem 0.55rem 1.6rem;
+		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+	}
+
+	.project-item__frame :global(img) {
+		display: block;
+		border-radius: 0.4rem;
 	}
 
 	.project-item__image :global(img) {
