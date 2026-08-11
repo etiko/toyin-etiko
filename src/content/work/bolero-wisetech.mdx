@@ -76,6 +76,30 @@ More recently, I've integrated GitHub Copilot CLI and Claude Code into daily
 development workflows, using them to investigate and resolve issues, refactor
 legacy code, and improve overall code quality and maintainability.
 
+## Retiring a deprecated layout dependency at scale
+
+One of the harder technical problems I solved was replacing Angular Flex
+Layout after it was deprecated. It was used across a large part of the
+workflow and UI layer, so this was a high-impact issue with no
+straightforward migration path and no tool that could safely transform
+existing usage to an equivalent solution with minimal regression risk.
+
+Rather than a fragile, one-off fix, I needed a scalable replacement that
+worked consistently across the application and aligned with our existing
+stack. I identified everywhere Flex Layout was used and analysed the
+recurring patterns — `fxLayout`, `fxLayoutAlign`, `fxLayoutGap` and `fxFlex`
+— then mapped them to Bootstrap utility classes, since Bootstrap was already
+central to our codebase. Instead of doing ad hoc replacements screen by
+screen, I designed a directive-based solution in our shared library that
+centralised the default layout behaviour, applied the Bootstrap equivalents
+consistently, and supported layout variants like row, column, reverse and
+wrap, with room to extend the directive layer as further cases appeared.
+
+The result was a clean, low-risk migration path that removed the dependency
+on a deprecated package, reduced the risk of inconsistent manual changes, and
+left a reusable, maintainable foundation for future layout work — handled
+through the shared directive approach rather than repeated custom fixes.
+
 ## Contribution
 
 - Led Angular upgrades from v8 to v19 across large-scale enterprise platforms.
@@ -89,3 +113,4 @@ legacy code, and improve overall code quality and maintainability.
 - Strengthened quality with unit and integration testing using Jest.
 - Partnered with Product and UX teams on requirements, accessibility and consistency.
 - Integrated GitHub Copilot CLI and Claude Code into daily development workflows.
+- Replaced deprecated Angular Flex Layout with a scalable, directive-based Bootstrap layout solution.
