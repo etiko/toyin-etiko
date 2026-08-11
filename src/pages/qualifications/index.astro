@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// TODO: replace the placeholder values below with the real degree title,
+// institution, classification and year for each qualification before this
+// page is committed or deployed.
+const qualifications = [
+	{
+		level: 'MSc',
+		title: '[Add degree title / subject]',
+		institution: '[Add institution name]',
+		year: '[Add year]',
+		detail: '[Add classification or notable detail, optional]',
+	},
+	{
+		level: 'BSc',
+		title: '[Add degree title / subject]',
+		institution: '[Add institution name]',
+		year: '[Add year]',
+		detail: '[Add classification or notable detail, optional]',
+	},
+];
+---
+
+<BaseLayout
+	title="Qualifications"
+	description="Academic qualifications and credentials held by Toyin Etiko."
+>
+	<section class="qualifications-page">
+		<div class="container qualifications-page__meta">
+			<p>Qualifications</p>
+			<p>{String(qualifications.length).padStart(2, '0')} credentials</p>
+		</div>
+
+		<div class="container qualifications-page__hero">
+			<h1>Academic qualifications.</h1>
+			<p>
+				Formal qualifications underpinning my front-end engineering and design
+				systems work.
+			</p>
+		</div>
+
+		<div class="container qualifications-list">
+			{
+				qualifications.map((qualification) => (
+					<article class="qualifications-list__item">
+						<span class="qualifications-list__level">{qualification.level}</span>
+						<div class="qualifications-list__body">
+							<h2>{qualification.title}</h2>
+							<p>{qualification.institution}</p>
+							{qualification.detail && <p class="qualifications-list__detail">{qualification.detail}</p>}
+						</div>
+						<span class="qualifications-list__year">{qualification.year}</span>
+					</article>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.qualifications-page {
+		min-height: calc(100svh - 5rem);
+		padding-block: 2rem clamp(6rem, 12vw, 10rem);
+	}
+
+	.qualifications-page__meta {
+		display: flex;
+		justify-content: space-between;
+		padding-bottom: 1rem;
+		border-bottom: 1px solid var(--black);
+	}
+
+	.qualifications-page__meta p {
+		color: var(--grey-500);
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.qualifications-page__hero {
+		padding-top: clamp(5rem, 10vw, 9rem);
+	}
+
+	.qualifications-page__hero h1 {
+		max-width: 45rem;
+		font-size: clamp(3.8rem, 8vw, 7rem);
+		font-weight: 670;
+		letter-spacing: -0.075em;
+		line-height: 0.95;
+	}
+
+	.qualifications-page__hero p {
+		max-width: 34rem;
+		margin-top: 1.5rem;
+		color: var(--grey-700);
+		font-size: clamp(1rem, 1.6vw, 1.15rem);
+		line-height: 1.7;
+	}
+
+	.qualifications-list {
+		margin-top: clamp(3rem, 7vw, 5rem);
+	}
+
+	.qualifications-list__item {
+		display: grid;
+		grid-template-columns: 6rem 1fr auto;
+		gap: 2rem;
+		align-items: baseline;
+		padding: 1.75rem 0;
+		border-top: 1px solid var(--black);
+	}
+
+	.qualifications-list__item:last-child {
+		border-bottom: 1px solid var(--black);
+	}
+
+	.qualifications-list__level {
+		color: var(--grey-500);
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.qualifications-list__body h2 {
+		font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+		font-weight: 620;
+		letter-spacing: -0.03em;
+	}
+
+	.qualifications-list__body p {
+		margin-top: 0.4rem;
+		color: var(--grey-700);
+		font-size: 0.9rem;
+		line-height: 1.6;
+	}
+
+	.qualifications-list__detail {
+		color: var(--grey-500);
+		font-size: 0.8rem;
+	}
+
+	.qualifications-list__year {
+		color: var(--grey-500);
+		font-size: 0.9rem;
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 650px) {
+		.qualifications-list__item {
+			grid-template-columns: 1fr;
+			gap: 0.5rem;
+		}
+
+		.qualifications-list__year {
+			order: -1;
+		}
+	}
+</style>

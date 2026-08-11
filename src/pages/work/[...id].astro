@@ -506,6 +506,10 @@ const desktopSlides = data.devicePreview
 		margin: 0;
 	}
 
+	.case-devices__desktop {
+		width: min(100%, 980px);
+	}
+
 	.case-devices__frame {
 		background: var(--black);
 		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
@@ -539,14 +543,30 @@ const desktopSlides = data.devicePreview
 
 	.case-devices__carousel {
 		position: relative;
+		width: 100%;
+		aspect-ratio: 1440 / 900;
 	}
 
 	.case-devices__slide {
-		display: none;
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity 0.5s ease,
+			visibility 0.5s ease;
 	}
 
 	.case-devices__slide[aria-hidden='false'] {
-		display: block;
+		opacity: 1;
+		visibility: visible;
+		z-index: 1;
+	}
+
+	.case-devices__slide :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.case-devices__nav {
@@ -764,6 +784,10 @@ const desktopSlides = data.devicePreview
 				iframe.allow =
 					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
 				iframe.allowFullscreen = true;
+				iframe.style.width = '100%';
+				iframe.style.height = '100%';
+				iframe.style.border = '0';
+				iframe.style.display = 'block';
 
 				facade.replaceChildren(iframe);
 			});
