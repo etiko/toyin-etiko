@@ -33,7 +33,7 @@ const work = defineCollection({
 						caption: z.string(),
 					}),
 				)
-				.min(2),
+				.min(1),
 			devicePreview: z
 				.object({
 					desktop: image(),
