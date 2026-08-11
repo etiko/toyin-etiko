@@ -33,6 +33,7 @@ const leadVideoUrl = data.leadVideo
 
 if (leadVideoUrl) {
 	leadVideoUrl.searchParams.set('rel', '0');
+	leadVideoUrl.searchParams.set('playsinline', '1');
 
 	if (data.leadVideo?.startAt) {
 		leadVideoUrl.searchParams.set('start', String(data.leadVideo.startAt));
@@ -819,6 +820,7 @@ const desktopSlides = data.devicePreview
 				iframe.allow =
 					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
 				iframe.allowFullscreen = true;
+				iframe.setAttribute('playsinline', '1');
 				iframe.style.width = '100%';
 				iframe.style.height = '100%';
 				iframe.style.border = '0';
