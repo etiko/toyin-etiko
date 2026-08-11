@@ -58,28 +58,34 @@ const additionalCertificates = [
 			</p>
 		</div>
 
-		<div class="container qualifications-grid">
+		<div class="container qualifications-list">
 			{
-				qualifications.map((qualification) => (
-					<article class="scroll-card">
-						<div class="scroll-card__ribbon">
+				qualifications.map((qualification, index) => (
+					<article class="qualification-item">
+						<header>
+							<span>{String(index + 1).padStart(2, '0')}</span>
 							<span>{qualification.level}</span>
-						</div>
-						<div class="scroll-card__certificate">
-							<span class="scroll-card__curl scroll-card__curl--top" aria-hidden="true" />
-							<Image
-								src={qualification.certificate}
-								alt={qualification.certificateAlt}
-								width={640}
-								loading="lazy"
-							/>
-							<span class="scroll-card__curl scroll-card__curl--bottom" aria-hidden="true" />
-						</div>
-						<div class="scroll-card__body">
-							<h2>{qualification.title}</h2>
-							<p>{qualification.institution}</p>
-							{qualification.detail && <p class="scroll-card__detail">{qualification.detail}</p>}
-							<span class="scroll-card__year">{qualification.year}</span>
+							<span>{qualification.year}</span>
+						</header>
+
+						<div class="qualification-item__grid">
+							<div class="qualification-item__image">
+								<div class="qualification-item__frame">
+									<Image
+										src={qualification.certificate}
+										alt={qualification.certificateAlt}
+										width={1200}
+										loading="lazy"
+										quality={84}
+									/>
+								</div>
+							</div>
+
+							<div class="qualification-item__content">
+								<h3>{qualification.title}</h3>
+								<p>{qualification.institution}</p>
+								{qualification.detail && <p class="qualification-item__detail">{qualification.detail}</p>}
+							</div>
 						</div>
 					</article>
 				))
@@ -88,24 +94,33 @@ const additionalCertificates = [
 
 		<div class="container qualifications-page__additional">
 			<h2>Additional training</h2>
-			<div class="qualifications-grid qualifications-grid--compact">
+			<div class="qualifications-list">
 				{
 					additionalCertificates.map((item) => (
-						<article class="scroll-card scroll-card--compact">
-							<div class="scroll-card__certificate">
-								<span class="scroll-card__curl scroll-card__curl--top" aria-hidden="true" />
-								<Image
-									src={item.certificate}
-									alt={item.certificateAlt}
-									width={640}
-									loading="lazy"
-								/>
-								<span class="scroll-card__curl scroll-card__curl--bottom" aria-hidden="true" />
-							</div>
-							<div class="scroll-card__body">
-								<h2>{item.title}</h2>
-								<p>{item.institution}</p>
-								<span class="scroll-card__year">{item.year}</span>
+						<article class="qualification-item">
+							<header>
+								<span aria-hidden="true">&mdash;</span>
+								<span>Certification</span>
+								<span>{item.year}</span>
+							</header>
+
+							<div class="qualification-item__grid">
+								<div class="qualification-item__image">
+									<div class="qualification-item__frame">
+										<Image
+											src={item.certificate}
+											alt={item.certificateAlt}
+											width={1200}
+											loading="lazy"
+											quality={84}
+										/>
+									</div>
+								</div>
+
+								<div class="qualification-item__content">
+									<h3>{item.title}</h3>
+									<p>{item.institution}</p>
+								</div>
 							</div>
 						</article>
 					))
@@ -156,10 +171,7 @@ const additionalCertificates = [
 		line-height: 1.7;
 	}
 
-	.qualifications-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: clamp(2.5rem, 5vw, 4rem);
+	.qualifications-list {
 		margin-top: clamp(3rem, 7vw, 5rem);
 	}
 
@@ -173,132 +185,96 @@ const additionalCertificates = [
 		letter-spacing: -0.03em;
 	}
 
-	.qualifications-grid--compact {
-		grid-template-columns: minmax(0, 22rem);
+	.qualifications-page__additional .qualifications-list {
 		margin-top: 1.75rem;
 	}
 
-	/* Scroll + ribbon presentation for certificates */
-	.scroll-card {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding-top: 1.25rem;
+	.qualification-item {
+		padding-block: clamp(2.5rem, 5vw, 4rem);
+		border-top: 1px solid var(--black);
 	}
 
-	.scroll-card__ribbon {
-		position: absolute;
-		top: -0.5rem;
-		left: 50%;
-		transform: translateX(-50%) rotate(-2deg);
-		z-index: 2;
-		background: linear-gradient(135deg, #b8121f, #7d0c15);
-		color: #fff;
-		font-size: 0.7rem;
-		font-weight: 800;
+	.qualification-item:last-child {
+		border-bottom: 1px solid var(--black);
+	}
+
+	.qualification-item header {
+		display: grid;
+		grid-template-columns: 4rem 1fr auto;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+		color: var(--grey-500);
+		font-size: 0.66rem;
+		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		padding: 0.5rem 1.4rem;
-		border-radius: 0.2rem;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 	}
 
-	.scroll-card__ribbon::before,
-	.scroll-card__ribbon::after {
-		content: '';
-		position: absolute;
-		bottom: -0.4rem;
-		border: 0.4rem solid transparent;
+	.qualification-item__grid {
+		display: grid;
+		grid-template-columns: minmax(18rem, 0.55fr) minmax(0, 1.45fr);
+		gap: clamp(2.5rem, 7vw, 6rem);
+		align-items: center;
 	}
 
-	.scroll-card__ribbon::before {
-		left: -0.1rem;
-		border-top-color: #5c090f;
-		border-left-color: #5c090f;
+	.qualification-item__image {
+		display: block;
+		overflow: hidden;
+		background: var(--off-white);
 	}
 
-	.scroll-card__ribbon::after {
-		right: -0.1rem;
-		border-top-color: #5c090f;
-		border-right-color: #5c090f;
+	.qualification-item__frame {
+		background: var(--black);
+		border-radius: 0.9rem;
+		padding: 0.55rem 0.55rem 1.6rem;
+		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+		clip-path: inset(0 round 0.9rem);
 	}
 
-	.scroll-card__certificate {
-		position: relative;
-		width: 100%;
-		padding: 0.75rem;
-		background: linear-gradient(180deg, #fdfaf2, #f4ecd8);
-		border-radius: 0.4rem;
-		box-shadow:
-			0 1px 0 rgba(0, 0, 0, 0.03) inset,
-			0 4px 12px rgba(0, 0, 0, 0.06);
-	}
-
-	.scroll-card__certificate :global(img) {
+	.qualification-item__frame :global(img) {
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: 0.2rem;
+		border-radius: 0.4rem;
 	}
 
-	.scroll-card__curl {
-		position: absolute;
-		left: 0.4rem;
-		right: 0.4rem;
-		height: 0.75rem;
-		border-radius: 50%;
-		background: linear-gradient(180deg, #efe7d2, #ddd0ab);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-		z-index: -1;
+	.qualification-item h3 {
+		font-size: clamp(1.5rem, 3vw, 2.4rem);
+		font-weight: 690;
+		letter-spacing: -0.045em;
+		line-height: 1.1;
 	}
 
-	.scroll-card__curl--top {
-		top: -0.35rem;
-	}
-
-	.scroll-card__curl--bottom {
-		bottom: -0.35rem;
-	}
-
-	.scroll-card__body {
-		width: 100%;
-		margin-top: 1.5rem;
-		text-align: center;
-	}
-
-	.scroll-card__body h2 {
-		font-size: clamp(1.15rem, 2vw, 1.5rem);
-		font-weight: 620;
-		letter-spacing: -0.03em;
-	}
-
-	.scroll-card__body p {
-		margin-top: 0.35rem;
+	.qualification-item__content > p {
+		margin-top: 1.25rem;
 		color: var(--grey-700);
-		font-size: 0.88rem;
-		line-height: 1.6;
+		font-size: 1rem;
+		line-height: 1.7;
 	}
 
-	.scroll-card__detail {
-		color: var(--grey-500);
-		font-size: 0.78rem;
-	}
-
-	.scroll-card__year {
-		display: inline-block;
-		margin-top: 0.6rem;
-		color: var(--grey-500);
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
+	.qualification-item__detail {
+		margin-top: 0.5rem !important;
+		color: var(--grey-500) !important;
+		font-size: 0.88rem !important;
 	}
 
 	@media (max-width: 800px) {
-		.qualifications-grid,
-		.qualifications-grid--compact {
+		.qualification-item__grid {
 			grid-template-columns: 1fr;
-			gap: 3rem;
+		}
+
+		.qualification-item__content {
+			max-width: 38rem;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.qualification-item header {
+			grid-template-columns: auto 1fr;
+		}
+
+		.qualification-item header span:last-child {
+			display: none;
 		}
 	}
 </style>
