@@ -1,23 +1,49 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import bscCertificate from '../../assets/qualifications/bsc-computer-science.jpg';
+import mscCertificate from '../../assets/qualifications/msc-advanced-computer-science.jpg';
+import studentRepCertificate from '../../assets/qualifications/student-representative-training.jpg';
+import micro1Certificate from '../../assets/qualifications/micro1-ai-interview-certification.jpg';
 
-// TODO: replace the placeholder values below with the real degree title,
-// institution, classification and year for each qualification before this
-// page is committed or deployed.
 const qualifications = [
 	{
 		level: 'MSc',
-		title: '[Add degree title / subject]',
-		institution: '[Add institution name]',
-		year: '[Add year]',
-		detail: '[Add classification or notable detail, optional]',
+		title: 'Advanced Computer Science and Information Technologies Management',
+		institution: 'The University of Manchester',
+		year: '2010',
+		detail: 'Awarded with Merit',
+		certificate: mscCertificate,
+		certificateAlt:
+			'MSc Advanced Computer Science and Information Technologies Management certificate, The University of Manchester, awarded with Merit, 09 November 2010.',
 	},
 	{
 		level: 'BSc',
-		title: '[Add degree title / subject]',
-		institution: '[Add institution name]',
-		year: '[Add year]',
-		detail: '[Add classification or notable detail, optional]',
+		title: 'Computer Science',
+		institution: 'University of Wolverhampton',
+		year: '2009',
+		detail: 'First Class Honours, including a sandwich placement',
+		certificate: bscCertificate,
+		certificateAlt:
+			'BSc (Hons) Computer Science certificate, First Class, University of Wolverhampton, 19 June 2009.',
+	},
+];
+
+const additionalCertificates = [
+	{
+		title: 'Student Representative Training',
+		institution: 'Student Voice System',
+		year: '2006–07',
+		certificate: studentRepCertificate,
+		certificateAlt: 'Student Representative Training certificate, 2006/7.',
+	},
+	{
+		title: 'AI Interview Certification',
+		institution: 'micro1',
+		year: '2026',
+		certificate: micro1Certificate,
+		certificateAlt:
+			"Certified by micro1 — Toyin Etiko had an outstanding performance during micro1's AI Interview, awarded 6 July 2026.",
 	},
 ];
 ---
@@ -40,20 +66,59 @@ const qualifications = [
 			</p>
 		</div>
 
-		<div class="container qualifications-list">
+		<div class="container qualifications-grid">
 			{
 				qualifications.map((qualification) => (
-					<article class="qualifications-list__item">
-						<span class="qualifications-list__level">{qualification.level}</span>
-						<div class="qualifications-list__body">
+					<article class="scroll-card">
+						<div class="scroll-card__ribbon">
+							<span>{qualification.level}</span>
+						</div>
+						<div class="scroll-card__certificate">
+							<span class="scroll-card__curl scroll-card__curl--top" aria-hidden="true" />
+							<Image
+								src={qualification.certificate}
+								alt={qualification.certificateAlt}
+								width={640}
+								loading="lazy"
+							/>
+							<span class="scroll-card__curl scroll-card__curl--bottom" aria-hidden="true" />
+						</div>
+						<div class="scroll-card__body">
 							<h2>{qualification.title}</h2>
 							<p>{qualification.institution}</p>
-							{qualification.detail && <p class="qualifications-list__detail">{qualification.detail}</p>}
+							{qualification.detail && <p class="scroll-card__detail">{qualification.detail}</p>}
+							<span class="scroll-card__year">{qualification.year}</span>
 						</div>
-						<span class="qualifications-list__year">{qualification.year}</span>
 					</article>
 				))
 			}
+		</div>
+
+		<div class="container qualifications-page__additional">
+			<h2>Additional training</h2>
+			<div class="qualifications-grid qualifications-grid--compact">
+				{
+					additionalCertificates.map((item) => (
+						<article class="scroll-card scroll-card--compact">
+							<div class="scroll-card__certificate">
+								<span class="scroll-card__curl scroll-card__curl--top" aria-hidden="true" />
+								<Image
+									src={item.certificate}
+									alt={item.certificateAlt}
+									width={640}
+									loading="lazy"
+								/>
+								<span class="scroll-card__curl scroll-card__curl--bottom" aria-hidden="true" />
+							</div>
+							<div class="scroll-card__body">
+								<h2>{item.title}</h2>
+								<p>{item.institution}</p>
+								<span class="scroll-card__year">{item.year}</span>
+							</div>
+						</article>
+					))
+				}
+			</div>
 		</div>
 	</section>
 </BaseLayout>
@@ -99,64 +164,157 @@ const qualifications = [
 		line-height: 1.7;
 	}
 
-	.qualifications-list {
+	.qualifications-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: clamp(2.5rem, 5vw, 4rem);
 		margin-top: clamp(3rem, 7vw, 5rem);
 	}
 
-	.qualifications-list__item {
-		display: grid;
-		grid-template-columns: 6rem 1fr auto;
-		gap: 2rem;
-		align-items: baseline;
-		padding: 1.75rem 0;
-		border-top: 1px solid var(--black);
+	.qualifications-page__additional {
+		margin-top: clamp(5rem, 10vw, 8rem);
 	}
 
-	.qualifications-list__item:last-child {
-		border-bottom: 1px solid var(--black);
-	}
-
-	.qualifications-list__level {
-		color: var(--grey-500);
-		font-size: 0.75rem;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-	}
-
-	.qualifications-list__body h2 {
+	.qualifications-page__additional h2 {
 		font-size: clamp(1.3rem, 2.4vw, 1.75rem);
 		font-weight: 620;
 		letter-spacing: -0.03em;
 	}
 
-	.qualifications-list__body p {
-		margin-top: 0.4rem;
+	.qualifications-grid--compact {
+		grid-template-columns: repeat(2, 1fr);
+		margin-top: 1.75rem;
+	}
+
+	/* Scroll + ribbon presentation for certificates */
+	.scroll-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-top: 1.25rem;
+	}
+
+	.scroll-card__ribbon {
+		position: absolute;
+		top: -0.5rem;
+		left: 50%;
+		transform: translateX(-50%) rotate(-2deg);
+		z-index: 2;
+		background: linear-gradient(135deg, #b8121f, #7d0c15);
+		color: #fff;
+		font-size: 0.7rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		padding: 0.5rem 1.4rem;
+		border-radius: 0.2rem;
+		box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+	}
+
+	.scroll-card__ribbon::before,
+	.scroll-card__ribbon::after {
+		content: '';
+		position: absolute;
+		bottom: -0.4rem;
+		border: 0.4rem solid transparent;
+	}
+
+	.scroll-card__ribbon::before {
+		left: -0.1rem;
+		border-top-color: #5c090f;
+		border-left-color: #5c090f;
+	}
+
+	.scroll-card__ribbon::after {
+		right: -0.1rem;
+		border-top-color: #5c090f;
+		border-right-color: #5c090f;
+	}
+
+	.scroll-card__certificate {
+		position: relative;
+		width: 100%;
+		padding: 0.75rem;
+		background: linear-gradient(180deg, #fdfaf2, #f4ecd8);
+		border-radius: 0.4rem;
+		box-shadow:
+			0 1px 0 rgba(0, 0, 0, 0.04) inset,
+			0 12px 28px rgba(0, 0, 0, 0.14);
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+	}
+
+	.scroll-card__certificate:hover {
+		transform: translateY(-4px) rotate(-0.4deg);
+		box-shadow:
+			0 1px 0 rgba(0, 0, 0, 0.04) inset,
+			0 18px 34px rgba(0, 0, 0, 0.18);
+	}
+
+	.scroll-card__certificate :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 0.2rem;
+	}
+
+	.scroll-card__curl {
+		position: absolute;
+		left: 0.4rem;
+		right: 0.4rem;
+		height: 0.85rem;
+		border-radius: 50%;
+		background: linear-gradient(180deg, #e7ddc3, #cabb92);
+		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+		z-index: -1;
+	}
+
+	.scroll-card__curl--top {
+		top: -0.35rem;
+	}
+
+	.scroll-card__curl--bottom {
+		bottom: -0.35rem;
+	}
+
+	.scroll-card__body {
+		width: 100%;
+		margin-top: 1.5rem;
+		text-align: center;
+	}
+
+	.scroll-card__body h2 {
+		font-size: clamp(1.15rem, 2vw, 1.5rem);
+		font-weight: 620;
+		letter-spacing: -0.03em;
+	}
+
+	.scroll-card__body p {
+		margin-top: 0.35rem;
 		color: var(--grey-700);
-		font-size: 0.9rem;
+		font-size: 0.88rem;
 		line-height: 1.6;
 	}
 
-	.qualifications-list__detail {
+	.scroll-card__detail {
+		color: var(--grey-500);
+		font-size: 0.78rem;
+	}
+
+	.scroll-card__year {
+		display: inline-block;
+		margin-top: 0.6rem;
 		color: var(--grey-500);
 		font-size: 0.8rem;
-	}
-
-	.qualifications-list__year {
-		color: var(--grey-500);
-		font-size: 0.9rem;
 		font-weight: 600;
-		white-space: nowrap;
+		letter-spacing: 0.04em;
 	}
 
-	@media (max-width: 650px) {
-		.qualifications-list__item {
+	@media (max-width: 800px) {
+		.qualifications-grid,
+		.qualifications-grid--compact {
 			grid-template-columns: 1fr;
-			gap: 0.5rem;
-		}
-
-		.qualifications-list__year {
-			order: -1;
+			gap: 3rem;
 		}
 	}
 </style>
