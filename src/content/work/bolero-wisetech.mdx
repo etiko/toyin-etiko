@@ -45,36 +45,56 @@ critical workflows running for platform teams and their users throughout.
 	actually involved.
 </ProjectNote>
 
-## The approach
+## Upgrading Angular from v8 to v19
 
-I led large-scale Angular upgrades spanning v8 through to v19, modernising
-legacy architecture and adopting standalone components, signals, the modern
+Bolero's platform had fallen many major Angular versions behind, carrying
+legacy architecture patterns, ageing dependency injection usage, and
+template-driven and reactive form patterns that pre-dated Angular's current
+best practice. Jumping straight to the latest release wasn't realistic: the
+upgrade had to happen one major version at a time, with every step verified
+before moving to the next, across a codebase relied on by multiple platform
+teams.
+
+I moved the codebase forward version by version, ensuring the full unit and
+end-to-end test suites passed at each step before progressing, so
+regressions were caught immediately rather than compounding across several
+major versions at once. Each upgrade surfaced breaking changes in key
+third-party dependencies — Formly, Bootstrap and AG-Grid all shipped
+incompatible API and styling changes across the versions covered — and I
+worked through each of these in turn, updating usage across the codebase
+and re-verifying against the test suites before considering that version
+complete. Alongside the version-by-version migration, I modernised the
+codebase itself: adopting standalone components, signals, the modern
 control-flow syntax, refreshed dependency injection patterns, and strongly
 typed reactive forms to improve both performance and long-term
-maintainability. Alongside the upgrade path, I developed reusable Angular
-components and shared UI patterns that were adopted across multiple platform
-teams, and delivered complex, data-driven interfaces using AG-Grid,
-Highcharts, Formly and Bootstrap 5.
+maintainability. I also developed reusable Angular components and shared UI
+patterns that were adopted across multiple platform teams, and delivered
+complex, data-driven interfaces using AG-Grid, Highcharts, Formly and
+Bootstrap 5.
 
-The work extended beyond the upgrade itself. I designed and implemented a
-multi-tenant, white-label theming system for Galileo, enabling a single
-codebase to serve distinct bank-branded UIs (UBS, BBK) via per-registrar
-SCSS bundles, a runtime cookie-driven stylesheet-switching mechanism, and a
-centralised Angular theming service — eliminating the need for per-client
-forks. I also collaborated with backend engineers to
-build REST endpoints in Java and Spring Boot for end-to-end delivery, and
-worked with relational databases and SQL to query, analyse and troubleshoot
-application data in support of feature development and issue resolution.
-Quality was strengthened throughout with unit and integration testing using
-Jest.
+The result was a platform brought fully up to date across eleven major
+Angular versions with no unplanned regressions, and a modernised foundation
+that teams could keep building on with current Angular patterns rather than
+legacy workarounds.
 
-Delivery was deeply collaborative: working closely with Product Managers and
-Product Specialists to refine requirements, clarify acceptance criteria and
-challenge assumptions, and with design and UX teams to improve accessibility,
-usability, responsiveness and consistency across enterprise applications.
-More recently, I've integrated GitHub Copilot CLI and Claude Code into daily
-development workflows, using them to investigate and resolve issues, refactor
-legacy code, and improve overall code quality and maintainability.
+## Building a multi-tenant, white-label theming system
+
+Galileo needed to serve several distinct bank-branded user interfaces — UBS,
+BBK — from a single codebase, without resorting to per-client forks that
+would have made every future change harder to maintain and roll out
+consistently.
+
+I designed and implemented a multi-tenant theming system built around
+per-registrar SCSS bundles, a runtime cookie-driven stylesheet-switching
+mechanism, and a centralised Angular theming service. This let the
+application resolve and apply the correct bank-branded stylesheet at
+runtime based on the active registrar, rather than shipping separate builds
+or maintaining divergent branches per client.
+
+The result eliminated the need for per-client forks entirely: a single
+codebase now serves every bank-branded UI, and adding support for a further
+registrar is a matter of adding a new SCSS bundle rather than branching the
+application.
 
 ## Retiring a deprecated layout dependency at scale
 
@@ -99,6 +119,23 @@ The result was a clean, low-risk migration path that removed the dependency
 on a deprecated package, reduced the risk of inconsistent manual changes, and
 left a reusable, maintainable foundation for future layout work — handled
 through the shared directive approach rather than repeated custom fixes.
+
+## Working across the wider platform
+
+Beyond these three pieces of work, I collaborated with backend engineers to
+build REST endpoints in Java and Spring Boot for end-to-end delivery, and
+worked with relational databases and SQL to query, analyse and troubleshoot
+application data in support of feature development and issue resolution.
+Quality was strengthened throughout with unit and integration testing using
+Jest.
+
+Delivery was deeply collaborative: working closely with Product Managers and
+Product Specialists to refine requirements, clarify acceptance criteria and
+challenge assumptions, and with design and UX teams to improve accessibility,
+usability, responsiveness and consistency across enterprise applications.
+More recently, I've integrated GitHub Copilot CLI and Claude Code into daily
+development workflows, using them to investigate and resolve issues, refactor
+legacy code, and improve overall code quality and maintainability.
 
 ## Contribution
 
