@@ -78,15 +78,18 @@ const desktopSlides = data.devicePreview
 			<figure class="container case-hero__media">
 				{
 					data.leadVideo && leadVideoUrl ? (
-						<div class="case-hero__video">
-							<iframe
-								src={leadVideoUrl.toString()}
-								title={data.leadVideo.title}
-								loading="lazy"
-								referrerpolicy="strict-origin-when-cross-origin"
-								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-								allowfullscreen
-							/>
+						<div
+							class="case-hero__video case-hero__video--facade"
+							data-video-facade
+							data-video-src={leadVideoUrl.toString()}
+						>
+							<Image src={data.image} alt={data.imageAlt} width={1900} quality={86} />
+							<button type="button" class="case-hero__play" data-video-play>
+								<span class="case-hero__play-icon" aria-hidden="true">
+									&#9658;
+								</span>
+								<span class="sr-only">Play {data.leadVideo.title}</span>
+							</button>
 						</div>
 					) : (
 						<Image src={data.image} alt={data.imageAlt} width={1900} quality={86} />
@@ -323,13 +326,69 @@ const desktopSlides = data.devicePreview
 	}
 
 	.case-hero__video {
+		position: relative;
 		aspect-ratio: 16 / 9;
 		background: var(--black);
+	}
+
+	.case-hero__video :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.case-hero__video iframe {
 		width: 100%;
 		height: 100%;
+		border: 0;
+	}
+
+	.case-hero__play {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		border: 0;
+		padding: 0;
+		background: rgba(0, 0, 0, 0.28);
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.case-hero__play:hover,
+	.case-hero__play:focus-visible {
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	.case-hero__play-icon {
+		display: grid;
+		place-items: center;
+		width: clamp(4.5rem, 8vw, 6.5rem);
+		height: clamp(4.5rem, 8vw, 6.5rem);
+		border-radius: 50%;
+		background: var(--white);
+		color: var(--black);
+		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		padding-left: 0.35rem;
+		transition: transform 0.2s ease;
+	}
+
+	.case-hero__play:hover .case-hero__play-icon,
+	.case-hero__play:focus-visible .case-hero__play-icon {
+		transform: scale(1.08);
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
 		border: 0;
 	}
 
@@ -682,4 +741,35 @@ const desktopSlides = data.devicePreview
 
 	initDeviceCarousels();
 	document.addEventListener('astro:page-load', initDeviceCarousels);
+
+	function initVideoFacades() {
+		document.querySelectorAll<HTMLElement>('[data-video-facade]').forEach((facade) => {
+			if (facade.dataset.videoInit) return;
+			facade.dataset.videoInit = 'true';
+
+			const playBtn = facade.querySelector<HTMLButtonElement>('[data-video-play]');
+			const src = facade.dataset.videoSrc;
+
+			playBtn?.addEventListener('click', () => {
+				if (!src) return;
+
+				const url = new URL(src);
+				url.searchParams.set('autoplay', '1');
+
+				const iframe = document.createElement('iframe');
+				iframe.src = url.toString();
+				iframe.title = playBtn.querySelector('.sr-only')?.textContent ?? 'Video';
+				iframe.loading = 'eager';
+				iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+				iframe.allow =
+					'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+				iframe.allowFullscreen = true;
+
+				facade.replaceChildren(iframe);
+			});
+		});
+	}
+
+	initVideoFacades();
+	document.addEventListener('astro:page-load', initVideoFacades);
 </script>
