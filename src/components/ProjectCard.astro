@@ -80,11 +80,11 @@ const number = String(index + 1).padStart(2, '0');
 	}
 
 	.project-item__frame {
-		overflow: hidden;
 		background: var(--black);
 		border-radius: 0.9rem;
 		padding: 0.55rem 0.55rem 1.6rem;
 		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+		clip-path: inset(0 round 0.9rem);
 	}
 
 	.project-item__frame :global(img) {

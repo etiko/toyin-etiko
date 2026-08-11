@@ -38,6 +38,13 @@ if (leadVideoUrl) {
 		leadVideoUrl.searchParams.set('start', String(data.leadVideo.startAt));
 	}
 }
+
+const desktopSlides = data.devicePreview
+	? [
+			{ src: data.devicePreview.desktop, alt: data.devicePreview.desktopAlt },
+			...data.gallery.map((item) => ({ src: item.src, alt: item.alt })),
+		]
+	: [];
 ---
 
 <BaseLayout title={`${data.title} case study`} description={data.summary}>
@@ -113,13 +120,57 @@ if (leadVideoUrl) {
 					<div class="container case-devices__frames">
 						<figure class="case-devices__desktop">
 							<div class="case-devices__frame case-devices__frame--desktop">
-								<Image
-									src={data.devicePreview.desktop}
-									alt={data.devicePreview.desktopAlt}
-									width={1400}
-									loading="lazy"
-									quality={84}
-								/>
+								<div class="case-devices__carousel" data-carousel>
+									{
+										desktopSlides.map((slide, index) => (
+											<div
+												class="case-devices__slide"
+												data-carousel-slide
+												aria-hidden={index === 0 ? 'false' : 'true'}
+											>
+												<Image
+													src={slide.src}
+													alt={slide.alt}
+													width={1400}
+													loading={index === 0 ? 'eager' : 'lazy'}
+													quality={84}
+												/>
+											</div>
+										))
+									}
+
+									{
+										desktopSlides.length > 1 && (
+											<>
+												<button
+													type="button"
+													class="case-devices__nav case-devices__nav--prev"
+													data-carousel-prev
+													aria-label="Previous screenshot"
+												>
+													&larr;
+												</button>
+												<button
+													type="button"
+													class="case-devices__nav case-devices__nav--next"
+													data-carousel-next
+													aria-label="Next screenshot"
+												>
+													&rarr;
+												</button>
+												<div class="case-devices__dots" data-carousel-dots>
+													{desktopSlides.map((_, index) => (
+														<span
+															class="case-devices__dot"
+															data-carousel-dot
+															aria-hidden={index === 0 ? 'false' : 'true'}
+														/>
+													))}
+												</div>
+											</>
+										)
+									}
+								</div>
 							</div>
 							<figcaption>Laptop</figcaption>
 						</figure>
@@ -397,24 +448,27 @@ if (leadVideoUrl) {
 	}
 
 	.case-devices__frame {
-		overflow: hidden;
 		background: var(--black);
 		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
+		clip-path: inset(0 round var(--frame-radius));
 	}
 
 	.case-devices__frame--phone {
+		--frame-radius: 2.2rem;
 		width: clamp(190px, 22vw, 260px);
 		padding: 0.6rem;
 		border-radius: 2.2rem;
 	}
 
 	.case-devices__frame--tablet {
+		--frame-radius: 1.4rem;
 		width: clamp(280px, 32vw, 400px);
 		padding: 0.7rem;
 		border-radius: 1.4rem;
 	}
 
 	.case-devices__frame--desktop {
+		--frame-radius: 0.9rem;
 		width: min(100%, 980px);
 		padding: 0.55rem 0.55rem 1.6rem;
 		border-radius: 0.9rem;
@@ -422,6 +476,69 @@ if (leadVideoUrl) {
 
 	.case-devices__frame--desktop :global(img) {
 		border-radius: 0.4rem;
+	}
+
+	.case-devices__carousel {
+		position: relative;
+	}
+
+	.case-devices__slide {
+		display: none;
+	}
+
+	.case-devices__slide[aria-hidden='false'] {
+		display: block;
+	}
+
+	.case-devices__nav {
+		position: absolute;
+		top: 50%;
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		margin-top: -1.3rem;
+		border: 0;
+		border-radius: 50%;
+		background: var(--white);
+		color: var(--black);
+		font-size: 1.1rem;
+		cursor: pointer;
+		box-shadow: 0 0.6rem 1.4rem rgba(0, 0, 0, 0.22);
+		transition: transform 0.15s ease;
+	}
+
+	.case-devices__nav:hover,
+	.case-devices__nav:focus-visible {
+		transform: scale(1.08);
+	}
+
+	.case-devices__nav--prev {
+		left: 0.75rem;
+	}
+
+	.case-devices__nav--next {
+		right: 0.75rem;
+	}
+
+	.case-devices__dots {
+		position: absolute;
+		bottom: 0.9rem;
+		left: 50%;
+		display: flex;
+		gap: 0.45rem;
+		transform: translateX(-50%);
+	}
+
+	.case-devices__dot {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 50%;
+		background: rgba(255, 255, 255, 0.45);
+	}
+
+	.case-devices__dot[aria-hidden='false'] {
+		background: var(--white);
 	}
 
 	.case-devices__frame :global(img) {
@@ -532,3 +649,37 @@ if (leadVideoUrl) {
 		}
 	}
 </style>
+
+<script>
+	function initDeviceCarousels() {
+		document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((carousel) => {
+			if (carousel.dataset.carouselInit) return;
+			carousel.dataset.carouselInit = 'true';
+
+			const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-slide]'));
+			const dots = Array.from(carousel.querySelectorAll<HTMLElement>('[data-carousel-dot]'));
+			const prevBtn = carousel.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+			const nextBtn = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+
+			if (slides.length < 2) return;
+
+			let current = 0;
+
+			const show = (index: number) => {
+				current = (index + slides.length) % slides.length;
+				slides.forEach((slide, i) => {
+					slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+				});
+				dots.forEach((dot, i) => {
+					dot.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+				});
+			};
+
+			prevBtn?.addEventListener('click', () => show(current - 1));
+			nextBtn?.addEventListener('click', () => show(current + 1));
+		});
+	}
+
+	initDeviceCarousels();
+	document.addEventListener('astro:page-load', initDeviceCarousels);
+</script>
