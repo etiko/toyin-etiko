@@ -71,13 +71,15 @@ const additionalCertificates = [
 						<div class="qualification-item__grid">
 							<div class="qualification-item__image">
 								<div class="qualification-item__frame">
-									<Image
-										src={qualification.certificate}
-										alt={qualification.certificateAlt}
-										width={1200}
-										loading="lazy"
-										quality={84}
-									/>
+									<div class="qualification-item__mat">
+										<Image
+											src={qualification.certificate}
+											alt={qualification.certificateAlt}
+											width={1200}
+											loading="lazy"
+											quality={84}
+										/>
+									</div>
 								</div>
 							</div>
 
@@ -107,13 +109,15 @@ const additionalCertificates = [
 							<div class="qualification-item__grid">
 								<div class="qualification-item__image">
 									<div class="qualification-item__frame">
-										<Image
-											src={item.certificate}
-											alt={item.certificateAlt}
-											width={1200}
-											loading="lazy"
-											quality={84}
-										/>
+										<div class="qualification-item__mat">
+											<Image
+												src={item.certificate}
+												alt={item.certificateAlt}
+												width={1200}
+												loading="lazy"
+												quality={84}
+											/>
+										</div>
 									</div>
 								</div>
 
@@ -224,18 +228,41 @@ const additionalCertificates = [
 	}
 
 	.qualification-item__frame {
-		background: var(--black);
-		border-radius: 0.9rem;
-		padding: 0.55rem 0.55rem 1.6rem;
-		box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.18);
-		clip-path: inset(0 round 0.9rem);
+		position: relative;
+		background: #0d0d0d;
+		background-image: linear-gradient(155deg, #262626 0%, #0a0a0a 55%, #1a1a1a 100%);
+		border-radius: 0.2rem;
+		padding: 1.4rem;
+		box-shadow:
+			0 2.5rem 4.5rem rgba(0, 0, 0, 0.25),
+			inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+	}
+
+	.qualification-item__frame::before {
+		/* gold fillet between the black moulding and the mat */
+		content: '';
+		position: absolute;
+		inset: 0.55rem;
+		border: 2px solid #b8963f;
+		border-image: linear-gradient(155deg, #f4dd94 0%, #a9782e 45%, #f4e3a1 75%, #8a651f 100%) 1;
+		border-radius: 0.1rem;
+		pointer-events: none;
+	}
+
+	.qualification-item__mat {
+		position: relative;
+		background: linear-gradient(155deg, #faf8f2 0%, #efeade 100%);
+		padding: 1.6rem;
+		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 	}
 
 	.qualification-item__frame :global(img) {
 		display: block;
 		width: 100%;
 		height: auto;
-		border-radius: 0.4rem;
+		box-shadow:
+			0 0.4rem 1.2rem rgba(0, 0, 0, 0.25),
+			inset 0 0 0 1px rgba(0, 0, 0, 0.08);
 	}
 
 	.qualification-item h3 {
