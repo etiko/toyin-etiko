@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import bscCertificate from '../../assets/qualifications/bsc-computer-science.jpg';
 import mscCertificate from '../../assets/qualifications/msc-advanced-computer-science.jpg';
-import studentRepCertificate from '../../assets/qualifications/student-representative-training.jpg';
 import micro1Certificate from '../../assets/qualifications/micro1-ai-interview-certification.jpg';
 
 const qualifications = [
@@ -30,13 +29,6 @@ const qualifications = [
 ];
 
 const additionalCertificates = [
-	{
-		title: 'Student Representative Training',
-		institution: 'Student Voice System',
-		year: '2006–07',
-		certificate: studentRepCertificate,
-		certificateAlt: 'Student Representative Training certificate, 2006/7.',
-	},
 	{
 		title: 'AI Interview Certification',
 		institution: 'micro1',
@@ -182,7 +174,7 @@ const additionalCertificates = [
 	}
 
 	.qualifications-grid--compact {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: minmax(0, 22rem);
 		margin-top: 1.75rem;
 	}
 
@@ -209,7 +201,7 @@ const additionalCertificates = [
 		text-transform: uppercase;
 		padding: 0.5rem 1.4rem;
 		border-radius: 0.2rem;
-		box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 	}
 
 	.scroll-card__ribbon::before,
@@ -239,16 +231,8 @@ const additionalCertificates = [
 		background: linear-gradient(180deg, #fdfaf2, #f4ecd8);
 		border-radius: 0.4rem;
 		box-shadow:
-			0 1px 0 rgba(0, 0, 0, 0.04) inset,
-			0 12px 28px rgba(0, 0, 0, 0.14);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-	}
-
-	.scroll-card__certificate:hover {
-		transform: translateY(-4px) rotate(-0.4deg);
-		box-shadow:
-			0 1px 0 rgba(0, 0, 0, 0.04) inset,
-			0 18px 34px rgba(0, 0, 0, 0.18);
+			0 1px 0 rgba(0, 0, 0, 0.03) inset,
+			0 4px 12px rgba(0, 0, 0, 0.06);
 	}
 
 	.scroll-card__certificate :global(img) {
@@ -262,10 +246,10 @@ const additionalCertificates = [
 		position: absolute;
 		left: 0.4rem;
 		right: 0.4rem;
-		height: 0.85rem;
+		height: 0.75rem;
 		border-radius: 50%;
-		background: linear-gradient(180deg, #e7ddc3, #cabb92);
-		box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+		background: linear-gradient(180deg, #efe7d2, #ddd0ab);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 		z-index: -1;
 	}
 
