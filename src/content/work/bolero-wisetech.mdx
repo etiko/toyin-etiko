@@ -23,9 +23,9 @@ devicePreview:
   desktopAlt: An abstract representation of the enterprise Angular platform viewed on a laptop.
 tags:
   - Angular
-  - React
   - Java & Spring Boot
   - AG-Grid
+  - SCSS Theming
 ---
 
 import ProjectNote from '../../components/ProjectNote.astro';
@@ -56,14 +56,17 @@ components and shared UI patterns that were adopted across multiple platform
 teams, and delivered complex, data-driven interfaces using AG-Grid,
 Highcharts, Formly and Bootstrap 5.
 
-The work extended beyond a single framework. I built reusable React
-components and integrated RESTful APIs to manage approval workflows and
-business processes, collaborated with backend engineers to build REST
-endpoints in Java and Spring Boot for end-to-end delivery, and worked with
-relational databases and SQL to query, analyse and troubleshoot application
-data in support of feature development and issue resolution. Quality was
-strengthened throughout with unit and integration testing using Jest and
-React Testing Library.
+The work extended beyond the upgrade itself. I designed and implemented a
+multi-tenant, white-label theming system for the Galileo Angular platform,
+enabling a single codebase to serve distinct bank-branded UIs (UBS, BBK,
+CIMB) via per-registrar SCSS bundles, a runtime cookie-driven stylesheet-
+switching mechanism, and a centralised Angular theming service — eliminating
+the need for per-client forks. I also collaborated with backend engineers to
+build REST endpoints in Java and Spring Boot for end-to-end delivery, and
+worked with relational databases and SQL to query, analyse and troubleshoot
+application data in support of feature development and issue resolution.
+Quality was strengthened throughout with unit and integration testing using
+Jest.
 
 Delivery was deeply collaborative: working closely with Product Managers and
 Product Specialists to refine requirements, clarify acceptance criteria and
@@ -79,9 +82,10 @@ legacy code, and improve overall code quality and maintainability.
 - Adopted standalone components, signals, modern control flow, and strongly typed reactive forms.
 - Built reusable Angular components and shared UI patterns adopted across platform teams.
 - Delivered complex, data-driven interfaces with AG-Grid, Highcharts, Formly and Bootstrap 5.
-- Built reusable React components and integrated RESTful APIs for approval workflows.
+- Designed and led a multi-tenant, white-label theming system for the Galileo Angular platform (UBS, BBK, CIMB).
+- Built a runtime cookie-driven stylesheet-switching mechanism and centralised Angular theming service.
 - Collaborated with backend engineers on REST endpoints using Java and Spring Boot.
 - Queried and troubleshot application data using SQL against relational databases.
-- Strengthened quality with unit and integration testing using Jest and React Testing Library.
+- Strengthened quality with unit and integration testing using Jest.
 - Partnered with Product and UX teams on requirements, accessibility and consistency.
 - Integrated GitHub Copilot CLI and Claude Code into daily development workflows.
