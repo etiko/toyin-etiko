@@ -811,6 +811,9 @@ const desktopSlides = data.devicePreview
 
 				const url = new URL(src);
 				url.searchParams.set('autoplay', '1');
+				url.searchParams.set('mute', '1');
+				url.searchParams.set('enablejsapi', '1');
+				url.searchParams.set('origin', window.location.origin);
 
 				const iframe = document.createElement('iframe');
 				iframe.src = url.toString();
@@ -827,6 +830,29 @@ const desktopSlides = data.devicePreview
 				iframe.style.display = 'block';
 
 				facade.replaceChildren(iframe);
+
+				// Mobile Chrome only grants autoplay with sound when a video
+				// starts muted, so it's started muted above and then unmuted
+				// via the YouTube postMessage API once the player is ready.
+				const unmute = () => {
+					iframe.contentWindow?.postMessage(
+						JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+						'*',
+					);
+					iframe.contentWindow?.postMessage(
+						JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+						'*',
+					);
+				};
+
+				iframe.addEventListener('load', () => {
+					// Give the YouTube player a moment to initialise before
+					// sending commands, then retry briefly in case the first
+					// message arrives before the player is listening.
+					setTimeout(unmute, 300);
+					setTimeout(unmute, 800);
+					setTimeout(unmute, 1500);
+				});
 			});
 		});
 	}
