@@ -120,6 +120,36 @@ on a deprecated package, reduced the risk of inconsistent manual changes, and
 left a reusable, maintainable foundation for future layout work — handled
 through the shared directive approach rather than repeated custom fixes.
 
+## Building a validated, multi-source documents workflow
+
+Every ePresentation instrument — letters of credit, collections and open
+account transactions — needed a documents grid where users could add, edit,
+remove and validate electronic and paper documents, sourced from a local
+file browser, a paper-document library, or an existing entry in the
+document store. The grid itself was AG-Grid, with its own imperative state,
+sitting inside a declarative Formly-driven reactive form, and the two had to
+stay in lockstep so that an invalid row anywhere in the grid also
+invalidated the surrounding form — with no existing pattern in the codebase
+for bridging that gap cleanly.
+
+I built a custom Formly field type, registered as a shared `e-pres-documents-table`
+type and reused across LC, collection and open account instruments, that
+wrapped the AG-Grid instance. It enriched column definitions at runtime with
+user column ordering, view/required state and Formly field metadata, and
+mapped between the grid's flat row shape and the nested document domain
+model. A dedicated row validator kept a live, per-document validation cache
+so invalid rows were flagged in the grid and immediately reflected in the
+reactive form's overall validity, while a single row-action dispatcher
+handled removing and replacing files, viewing documents, editing metadata,
+and triggering an EBL name-to-order reassignment workflow. Add-button
+visibility was itself gated by user authority, view-state configuration and
+instrument-specific business rules.
+
+The result was one reusable, validated component instead of duplicated
+document-handling logic per instrument type, with new document sources,
+row actions and instrument-specific rules addable without touching the
+underlying grid or validation plumbing.
+
 ## Working across the wider platform
 
 Beyond these three pieces of work, I collaborated with backend engineers to
@@ -143,6 +173,7 @@ legacy code, and improve overall code quality and maintainability.
 - Adopted standalone components, signals, modern control flow, and strongly typed reactive forms.
 - Built reusable Angular components and shared UI patterns adopted across platform teams.
 - Delivered complex, data-driven interfaces with AG-Grid, Highcharts, Formly and Bootstrap 5.
+- Built a reusable, validated documents grid shared across LC, collection and open account instruments, bridging AG-Grid and Formly-driven reactive forms.
 - Designed and led a multi-tenant, white-label theming system for Galileo (UBS, BBK).
 - Built a runtime cookie-driven stylesheet-switching mechanism and centralised Angular theming service.
 - Collaborated with backend engineers on REST endpoints using Java and Spring Boot.
