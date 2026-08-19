@@ -39,15 +39,17 @@ client with the message pre-filled.
 
 ## Deploying to 123-reg
 
-Pushes to `main` are built and deployed automatically by the
-[Deploy site](.github/workflows/deploy.yml) GitHub Actions workflow, which
-runs `npm run build` and syncs `dist/` to the host over FTPS. Only changed
-files are uploaded (tracked via a state file on the server), and it never
-deletes pre-existing, non-Astro content on the host (e.g. legacy `/nikkah`,
-`/meeting` pages, `.htaccess`). The workflow uses three repository secrets —
-`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD` — configured under
-**Settings → Secrets and variables → Actions**. You can also trigger a deploy
-manually from the **Actions** tab via `workflow_dispatch`.
+Pushes to `main` are checked, built and deployed automatically by the
+[Deploy site](.github/workflows/deploy.yml) GitHub Actions workflow: a
+`check` job runs `npm run check` (Astro + TypeScript diagnostics), and only
+if that passes does the `build-and-deploy` job run `npm run build` and sync
+`dist/` to the host over FTPS. Only changed files are uploaded (tracked via
+a state file on the server), and it never deletes pre-existing, non-Astro
+content on the host (e.g. legacy `/nikkah`, `/meeting` pages, `.htaccess`).
+The workflow uses three repository secrets — `FTP_SERVER`, `FTP_USERNAME`,
+`FTP_PASSWORD` — configured under **Settings → Secrets and variables →
+Actions**. You can also trigger a deploy manually from the **Actions** tab
+via `workflow_dispatch`.
 
 The manual steps below remain useful as a fallback, or for a one-off deploy
 outside CI.
