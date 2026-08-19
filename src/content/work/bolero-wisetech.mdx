@@ -120,6 +120,37 @@ on a deprecated package, reduced the risk of inconsistent manual changes, and
 left a reusable, maintainable foundation for future layout work — handled
 through the shared directive approach rather than repeated custom fixes.
 
+## Visualising nested entity hierarchies in a permission-linking flow
+
+Bolero's client-administration screens let an admin link a user to entities
+that could nest up to five levels deep — entities, sub-entities and further
+nested extensions — across create, edit, view and permission-management
+flows. Every step of that journey, including the final confirmation before
+committing the change, needed to represent the hierarchy clearly, with
+selections at any level cascading sensibly to their children. There was no
+tree component anywhere in our shared library, and pulling in an external
+tree or org-chart library felt heavier than the problem warranted.
+
+I built two components in our shared library to solve this. `app-entity-grid-modal`
+is an AG-Grid-based picker where admins search and multi-select entities and
+sub-entities, with selection rules that automatically cascaded a parent's
+selection to its children (and back) and capped traversal at the fifth
+hierarchy level to keep deeply nested data safe to render. `app-entity-relationship`
+is a `ControlValueAccessor` component that renders the resulting selection as
+an actual branching tree — expandable parent rows fanning out through
+sub-entities and further nested extensions, drawn entirely with table markup
+and CSS pseudo-element borders acting as connector lines, without any canvas
+or charting dependency. That tree became the confirmation step of the
+linking flow itself: rather than a flat summary list, the admin sees the real
+branching structure of exactly what they're about to link, several levels
+deep, rendered as its own connected diagram — a way of building a
+confirmation screen I hadn't seen taken elsewhere.
+
+The result was a clear, visual, before-you-commit view of precisely which
+entities and sub-entities a user was being linked to, reused across the
+create, edit, view, release and permission-management flows, without taking
+on a dedicated tree or graph-charting dependency.
+
 ## Building a validated, multi-source documents workflow
 
 Every ePresentation instrument — letters of credit, collections and open
@@ -174,6 +205,7 @@ legacy code, and improve overall code quality and maintainability.
 - Built reusable Angular components and shared UI patterns adopted across platform teams.
 - Delivered complex, data-driven interfaces with AG-Grid, Highcharts, Formly and Bootstrap 5.
 - Built a reusable, validated documents grid shared across LC, collection and open account instruments, bridging AG-Grid and Formly-driven reactive forms.
+- Designed a CSS-only nested tree visualisation for a five-level entity hierarchy, used as the confirmation step of a permission-linking flow.
 - Designed and led a multi-tenant, white-label theming system for Galileo (UBS, BBK).
 - Built a runtime cookie-driven stylesheet-switching mechanism and centralised Angular theming service.
 - Collaborated with backend engineers on REST endpoints using Java and Spring Boot.
